@@ -54,17 +54,20 @@ public class PhieuNhapDAO extends DAODAL<PhieuNhapDTO> implements Serializable {
 
               PreparedStatement statement = data.prepareStatement(sql);
 
-              ResultSet rs = statement.executeQuery();
+              ResultSet rs = statement.executeQuery();                // dong so 0
               // System.out.println(rs.getRow());
+
               PhieuNhapDTO phieuNhap = null;
+
               dsChiTietPhieuBUS temp = new dsChiTietPhieuBUS();
+
               if(rs.next() == false){            // tang them 1 dong cho rs va kiem tra
                      return null;
               }
               // rs.next(); 
               // System.out.println(rs.getRow());
 
-              // doc thong tin cho phieu
+              // doc thong tin cho phieu nhap
               String id_Phieu = rs.getString("ID");
               String date_Phieu = rs.getString("Ngay");
               String ID_Nv = rs.getString("ID_NV");
@@ -92,12 +95,14 @@ public class PhieuNhapDAO extends DAODAL<PhieuNhapDTO> implements Serializable {
                      // temp.add(CT);
 
                      // }
+
                      ChiTietPhieuDTO CT = new ChiTietPhieuDTO(null, null, 0, 0);
 
                      CT.setNameProduct(rs.getString("TenSP"));
                      CT.setMaSP(rs.getString("MaSP"));
                      CT.setSoLuong(rs.getInt("SoLuong"));
                      CT.setDonGia(rs.getInt("DonGia"));
+
                      temp.add(CT);
 
                      
@@ -113,6 +118,7 @@ public class PhieuNhapDAO extends DAODAL<PhieuNhapDTO> implements Serializable {
 
        @Override
        public ArrayList<PhieuNhapDTO> getList() throws SQLException {
+
               String sql = "SELECT * FROM tblPhieuNhap,tblChiTietPhieuNhap,tblPhieu WHERE ID = ID_PhieuNhap AND ID_PhieuNhap = ID_CTPhieuNhap ORDER BY ID ASC";
               PreparedStatement statement = data.prepareStatement(sql);
               // kiem tra xem data co rong khong 
@@ -122,26 +128,34 @@ public class PhieuNhapDAO extends DAODAL<PhieuNhapDTO> implements Serializable {
               }
               check.close();
 
-              ResultSet rs1 = statement.executeQuery();
-              ArrayList<PhieuNhapDTO> arr = new ArrayList<PhieuNhapDTO>();
+              ResultSet rs1 = statement.executeQuery();               // dong 0
+
+              ArrayList<PhieuNhapDTO> arr = new ArrayList<PhieuNhapDTO>();            
+
               ArrayList<String> arrMaID = new ArrayList<String>();           // doc ma~ ID phieu co trong sql
+
               while (rs1.next()) {
                      String ID = rs1.getString("ID");
+
                      if(arrMaID.contains(ID) == false){                      // nếu mã chưa có thì thêm vào
-                            arrMaID.add(ID);
+                            arrMaID.add(ID);            // N001 , N002 , N003 , N004 , N006
                      }
                      
               }
               rs1.close();         // đóng kết nối 
-              // for (String iterable_element : arrMaID) {
-              //        System.out.println(iterable_element);
-              // }
+              
+              
               int i = 0;                  // duyệt phần tử trong arrMaID
               ResultSet rs2 = statement.executeQuery();        // tạo con trỏ truy vấn 2 
-              String ID = arrMaID.get(i);        // thiet lap maID ban dau 
+
+              String ID = arrMaID.get(i);        // thiet lap maID ban dau   N001          
+             
               rs2.next();                        // tang con tro rs2 len 1 --> dong dau tien trong sql
+
               int flag = 0;                      // dieu kien dung 
+
               dsChiTietPhieuBUS temp = new dsChiTietPhieuBUS();
+
               String ID_NV = "";
               String date = "";
               String maNSX = "";
@@ -158,29 +172,35 @@ public class PhieuNhapDAO extends DAODAL<PhieuNhapDTO> implements Serializable {
                      //            - tạo một 1 phiếu mới với thông tin đã có ở trên rồi add vào mảng
                      //            - reset lại mảng chi tiết phiếu có trong phiếu
                      //            - tăng giá trị i duyệt lên để lấy mã tiếp theo trong mảng
-                     if(rs2.getString("ID_PhieuNhap").equals(ID)){
+                     if(rs2.getString("ID_PhieuNhap").equals(ID)){    
                             // System.out.println(ID);
+
                             ID_NV = rs2.getString("ID_NV");
                             date = rs2.getString("Ngay");
                             maNSX = rs2.getString("MaNSX");
                             TinhTrang = rs2.getString("TinhTrang");
+
                             ChiTietPhieuDTO moi = new ChiTietPhieuDTO("", "", 0, 0);
+
                             moi.setNameProduct(rs2.getString("TenSP"));
                             moi.setMaSP(rs2.getString("MaSP"));
                             moi.setSoLuong(rs2.getInt("SoLuong"));
                             moi.setDonGia(rs2.getInt("DonGia"));
-                            temp.add(moi);
+
+                            temp.add(moi);              // tehm chi tiet vao ds chi tiet phieu
+
                             if(rs2.next() == false){
-                                   flag = -1;
+                                   flag = -1;           
                                    arr.add(new PhieuNhapDTO(ID, date, temp, temp.Sum_money(), ID_NV, maNSX,TinhTrang));
                             }
 
                      }
                      else{
                             arr.add(new PhieuNhapDTO(ID, date, temp, temp.Sum_money(), ID_NV, maNSX,TinhTrang));
-                            temp = new dsChiTietPhieuBUS();
-                            i++;
-                            ID = arrMaID.get(i);
+
+                            temp = new dsChiTietPhieuBUS();           // danh sach moi 
+                            i++;          
+                            ID = arrMaID.get(i);               // N002
                             
                      }
               }
@@ -265,6 +285,9 @@ public class PhieuNhapDAO extends DAODAL<PhieuNhapDTO> implements Serializable {
               }
               return check_1 == check_2;
        }
+
+
+       
 
        
 }

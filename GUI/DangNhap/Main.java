@@ -18,5 +18,5 @@ public class Main {
               DangNhap_view dangNhap_view = new DangNhap_view(staffs, dSachNhaCC, dsPhieuNhap, listProducts,
                             dsPhieuXuat, danhSachHD, thongKe);
        }
-
+       
 }

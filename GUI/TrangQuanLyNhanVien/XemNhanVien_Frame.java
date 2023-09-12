@@ -263,7 +263,8 @@ public class XemNhanVien_Frame extends JFrame {
 
 	public void setAnh(String maNV) {
 		// dua vao ma de set anh
-		String link_anh = "D:\\DO_AN_JAVA_TONG_KET\\DoAnOOP_Nhom10\\image_icon\\AnhNV\\" + maNV + ".jpg";
+		String link_anh = "image_icon\\AnhNV\\" + maNV + ".jpg";
+		
 		this.Anh_label.setIcon(new ImageIcon(link_anh));
 	}
 	public void setThongtinLuong(String chucVu) {

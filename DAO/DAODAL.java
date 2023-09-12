@@ -8,7 +8,7 @@ public abstract class DAODAL <T> {
        conectionDataBaseDAO conn = new conectionDataBaseDAO();
        Connection data = conn.getConn();
 
-       // lay danh sach phan tu luu trong data base
+       // lay danh sach phan tu luu trong data base            
        public abstract ArrayList<T> getList() throws SQLException;
 
        // lay 1 doi tuong trong data base

@@ -19,7 +19,9 @@ public class DrinkProductsDAO extends DAODAL<DrinkDTO>  implements Serializable{
                      String sql_Drink = String.format("DELETE FROM tblDrink WHERE Ma_Drink = '%s' ", t.getMaSP());
        
                      PreparedStatement statement1 = data.prepareStatement(sql_Products);
+
                      PreparedStatement statement2 = data.prepareStatement(sql_Drink);
+                     
                      return statement2.executeUpdate() > 0 && statement1.executeUpdate() > 0;
               }
               return false;
@@ -46,8 +48,8 @@ public class DrinkProductsDAO extends DAODAL<DrinkDTO>  implements Serializable{
               String sql = String.format(
                             "SELECT * FROM tblDrink,tblProducts WHERE Ma_Product = Ma_Drink AND Ma_Product = '%s'", id);
 
-              PreparedStatement statement = data.prepareStatement(sql);
-              ResultSet rs = statement.executeQuery();
+              PreparedStatement statement = data.prepareStatement(sql);      
+              ResultSet rs = statement.executeQuery();                       
 
               if (rs.next()) {
                      DrinkDTO drink = new DrinkDTO();
@@ -143,6 +145,7 @@ public class DrinkProductsDAO extends DAODAL<DrinkDTO>  implements Serializable{
               }
               String sql_Drink = String.format("UPDATE tblDrink SET Alcoholic = ? WHERE Ma_Drink ='%s'  ",t.getMaSP() ) ;
               String sql_Products = String.format("UPDATE tblProducts SET Name = ?, Price = ?,Taxes = ?,ExpiryDate = ?,Ma_Supplier = ?,SoLuong = ? WHERE Ma_Product = '%s' ",t.getMaSP());
+
               PreparedStatement statement1 = data.prepareStatement(sql_Products);
               PreparedStatement statement2 = data.prepareStatement(sql_Drink);
               
@@ -173,16 +176,22 @@ public class DrinkProductsDAO extends DAODAL<DrinkDTO>  implements Serializable{
               return statement2.executeUpdate() > 0 && statement1.executeUpdate() > 0;
 
        }
-
+       // ham kiem tra
        private boolean check_delete(String id) throws SQLException {
+
               ArrayList<PhieuXuatDTO> list_PhieuXuat = data_PhieuXuat.getList();
               ArrayList<HoaDonDTO> list_HoaDon = data_HoaDon.getList();
 
               int  flag_PhieuXuat = 0, flag_HoaDon = 0;
 
               for (PhieuXuatDTO phieuXuat : list_PhieuXuat) {
-                            ChiTietPhieuDTO[] temp = phieuXuat.getDsChitietphieu2().getChiTietPhieu2s();
+                            // phieu xuat : doi tuong dsChiTietPhieu
+                            // getDsChitietphieu2 --> doi tuong class dsChiTietPhieu 
+                            // dsChiTietPhieu.getChiTietPhieu2s       --> lay cai mang trong doi tuong do
+                            ChiTietPhieuDTO [] temp = phieuXuat.getDsChitietphieu2().getChiTietPhieu2s();
+
                             int soluongCT = phieuXuat.getDsChitietphieu2().getIndex();
+
                             for (int i = 0; i < soluongCT; i++) {
                                    if (temp[i].getMaSP().equals(id)) {
                                           flag_PhieuXuat = 1;

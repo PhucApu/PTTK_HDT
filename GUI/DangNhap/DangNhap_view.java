@@ -64,6 +64,7 @@ public class DangNhap_view extends JFrame {
 		setResizable(false);
 		setTitle("ĐĂNG NHẬP");
 		setIconImage((new ImageIcon("image_icon\\user.png")).getImage());
+		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		Color mau = new Color(111, 164, 159);
