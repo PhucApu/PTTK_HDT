@@ -8,5 +8,6 @@
   </li>
   <li>
     Cách khởi chạy ứng dụng
+    <p>Bạn cần đọc file "CÁCH SỬ DỤNG DATABASE.docx" trước để hiểu hơn về các thư viện cần thiết cho việc kết nối bằng JDBC</p>
   </li>
 </ol>
