@@ -144,11 +144,11 @@ public class DanhSachHDBUS implements Serializable, DanhSachBUS {
                      return false;
               else {
                      if (hoaDon.getTinhTrang().equals("Đang chờ xác nhận")) {
-                            
                             hoaDon.setManv(nguoi.getId());
                             hoaDon.setTinhTrang("Đã bán");
                             if(updatePhieuXuat_database(hoaDon)){
-                                   dsPhieuXuat.add(hoaDon, kho);
+                                   dsPhieuXuat.add(nguoi,hoaDon, kho);
+                                   // dsPhieuXuat.XacnhanXuatko_2(nguoi, kho, id);
                                    return true;
                             }
                             

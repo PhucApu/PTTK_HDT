@@ -89,13 +89,13 @@ public class ThongKePhieuXuat extends JFrame {
 
 		setContentPane(contentPane);
 		
-		JLabel ThongKePhieuXuat_label = new JLabel("THỐNG KÊ PHIẾU XUẤT", JLabel.CENTER);
+		JLabel ThongKePhieuXuat_label = new JLabel("THỐNG KÊ PHIẾU HỦY", JLabel.CENTER);
 		ThongKePhieuXuat_label.setForeground(new Color(97, 113, 67));
 		ThongKePhieuXuat_label.setFont(new Font("Tahoma", Font.BOLD, 35));
 		ThongKePhieuXuat_label.setBounds(10, 23, 785, 40);
 		contentPane.add(ThongKePhieuXuat_label);
 		
-		BangThongKeSP_label = new JLabel("Bảng thống kê phần trăm các sản phẩm được xuất",JLabel.CENTER);
+		BangThongKeSP_label = new JLabel("Bảng thống kê phần trăm các sản phẩm được hủy",JLabel.CENTER);
 		BangThongKeSP_label.setFont(new Font("Tahoma", Font.BOLD, 14));
 		BangThongKeSP_label.setBounds(23, 83, 370, 30);
 		contentPane.add(BangThongKeSP_label);
@@ -107,7 +107,7 @@ public class ThongKePhieuXuat extends JFrame {
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
-		JLabel PXTongTienLonNhat_label = new JLabel("Phiếu xuất có tổng tiền lớn nhất :");
+		JLabel PXTongTienLonNhat_label = new JLabel("Phiếu hủy có tổng tiền lớn nhất :");
 		PXTongTienLonNhat_label.setFont(new Font("Tahoma", Font.BOLD, 12));
 		PXTongTienLonNhat_label.setBounds(10, 28, 239, 30);
 		panel.add(PXTongTienLonNhat_label);
@@ -117,7 +117,7 @@ public class ThongKePhieuXuat extends JFrame {
 		GanPNTongTienLonNhat_label.setBounds(230, 28, 130, 30);
 		panel.add(GanPNTongTienLonNhat_label);
 		
-		JLabel NVXuatMax_label = new JLabel("Nhân viên xuất nhiều nhất :");
+		JLabel NVXuatMax_label = new JLabel("Nhân viên hủy nhiều nhất :");
 		NVXuatMax_label.setFont(new Font("Tahoma", Font.BOLD, 12));
 		NVXuatMax_label.setBounds(10, 91, 199, 30);
 		panel.add(NVXuatMax_label);
@@ -127,7 +127,7 @@ public class ThongKePhieuXuat extends JFrame {
 		GanNVNhapMax_label.setBounds(195, 91, 165, 30);
 		panel.add(GanNVNhapMax_label);
 		
-		JLabel BangThongKePX_label = new JLabel("Bảng thống kê phiếu xuất", JLabel.CENTER);
+		JLabel BangThongKePX_label = new JLabel("Bảng thống kê phiếu hủy", JLabel.CENTER);
 		BangThongKePX_label.setFont(new Font("Tahoma", Font.BOLD, 15));
 		BangThongKePX_label.setBounds(419, 83, 350, 30);
 		contentPane.add(BangThongKePX_label);
@@ -214,9 +214,9 @@ public class ThongKePhieuXuat extends JFrame {
 				index++;
 			}
 			this.GanPNTongTienLonNhat_label.setText(
-					trangThongKe_view.getThongKe().ThongKe_PhieuXuatTongTienMax("1/1/2023", Sys.getDateNow()).toString());
+					trangThongKe_view.getThongKe().ThongKe_PhieuHuyTongTienMax("1/1/2023", Sys.getDateNow()).toString());
 			this.GanNVNhapMax_label.setText(
-					trangThongKe_view.getThongKe().ThongKe_NhanVienXuatMax("1/1/2023", Sys.getDateNow()).toString());
+					trangThongKe_view.getThongKe().ThongKe_NhanVienHuytMax("1/1/2023", Sys.getDateNow()).toString());
 		}
 		
 	}
@@ -227,7 +227,7 @@ public class ThongKePhieuXuat extends JFrame {
 		model = (DefaultTableModel) table.getModel();
 		if (Sys.compareDay(dayBefore, dayAfter)) {
 			ListProductsBUS listProducts = trangThongKe_view.getThongKe().getListProducts();
-			ArrayList <Double> phantram = trangThongKe_view.getThongKe().ThongKe_nhapProduct(dayBefore, dayAfter);
+			ArrayList <Double> phantram = trangThongKe_view.getThongKe().ThongKe_huyProduct(dayBefore, dayAfter);
 			int index = 0;
 			int number_row = model.getRowCount();
 			for (int i = number_row - 1; i >= 0; i--) {
@@ -241,9 +241,9 @@ public class ThongKePhieuXuat extends JFrame {
 			}
 			
 			this.GanPNTongTienLonNhat_label.setText(trangThongKe_view.getThongKe()
-					.ThongKe_PhieuXuatTongTienMax(dayBefore, dayAfter).toString());
+					.ThongKe_PhieuHuyTongTienMax(dayBefore, dayAfter).toString());
 			
-			this.GanNVNhapMax_label.setText(trangThongKe_view.getThongKe().ThongKe_NhanVienXuatMax(dayBefore, dayAfter).toString());
+			this.GanNVNhapMax_label.setText(trangThongKe_view.getThongKe().ThongKe_NhanVienHuytMax(dayBefore, dayAfter).toString());
 
 		} else {
 			Sys.Warning_dialog("NHẬP NGÀY SAI");
@@ -253,7 +253,7 @@ public class ThongKePhieuXuat extends JFrame {
 	public void btn_xuatFile_Excel() throws IOException{
 		String dayBefore = this.DayBefore_textField.getText();
 		String dayAfter = this.DayAfter_textField.getText();
-		String pathname = "D:\\A\\JAVA\\DO_AN_JAVA_SWING\\Excel_PhieuXuat\\"+"TK_PX_("+Sys.takeDayFormat_(dayBefore)+"-"+Sys.takeDayFormat_(dayAfter)+").xlsx";
+		String pathname = "D:\\A\\JAVA\\DO_AN_JAVA_SWING\\Excel_PhieuHuy\\"+"TK_PH_("+Sys.takeDayFormat_(dayBefore)+"-"+Sys.takeDayFormat_(dayAfter)+").xlsx";
 		if(Sys.createExcelFile(pathname)){
 			// ngay thong ke
 			ArrayList <String> ngaythongke = new ArrayList<>();
@@ -267,12 +267,12 @@ public class ThongKePhieuXuat extends JFrame {
 				nameSP.add(iterable_element.getNameProduct());
 			}
 			// phan tram
-			ArrayList<Double> phantram = trangThongKe_view.getThongKe().ThongKe_xuatProduct(dayBefore, dayAfter);
+			ArrayList<Double> phantram = trangThongKe_view.getThongKe().ThongKe_huyProduct(dayBefore, dayAfter);
 			// ma phieu
 			ArrayList<String> maPhieu = trangThongKe_view.getThongKe()
-			.ThongKe_PhieuXuatTongTienMax(dayBefore, dayAfter);
+			.ThongKe_PhieuHuyTongTienMax(dayBefore, dayAfter);
 			// ma nhan vien
-			ArrayList<String> maNV = trangThongKe_view.getThongKe().ThongKe_NhanVienXuatMax(dayBefore, dayAfter);
+			ArrayList<String> maNV = trangThongKe_view.getThongKe().ThongKe_NhanVienHuytMax(dayBefore, dayAfter);
 			
 
 			if(Sys.writeExcel_TKPhieuXuat(pathname, ngaythongke, maSP, nameSP, phantram, maPhieu, maNV)){
@@ -313,13 +313,13 @@ public class ThongKePhieuXuat extends JFrame {
 				nameSP_data.add(iterable_element.getNameProduct());
 			}
 			// phan tram
-			ArrayList<Double> phantram_data = trangThongKe_view.getThongKe().ThongKe_xuatProduct(dayBefore,
+			ArrayList<Double> phantram_data = trangThongKe_view.getThongKe().ThongKe_huyProduct(dayBefore,
 					dayAfter);
 			// ma phieu
 			ArrayList<String> maPhieu = trangThongKe_view.getThongKe()
-					.ThongKe_PhieuXuatTongTienMax(dayBefore, dayAfter);
+					.ThongKe_PhieuHuyTongTienMax(dayBefore, dayAfter);
 			// ma nhan vien
-			ArrayList<String> maNV_data = trangThongKe_view.getThongKe().ThongKe_NhanVienXuatMax(dayBefore,
+			ArrayList<String> maNV_data = trangThongKe_view.getThongKe().ThongKe_NhanVienHuytMax(dayBefore,
 					dayAfter);
 			
 

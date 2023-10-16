@@ -267,11 +267,15 @@ public class SuaPhieuNhap_Frame extends JFrame {
 		controller_TimKiemCT_SuaPhieuFrame controller_TimKiemCT_SuaPhieuFrame = new controller_TimKiemCT_SuaPhieuFrame(
 				this);
 		TimKiemCTIcon_label.addMouseListener(controller_TimKiemCT_SuaPhieuFrame);
+
 		controller_SuaCT_SuaPhieuFrame controller_SuaCT_SuaPhieuFrame = new controller_SuaCT_SuaPhieuFrame(this);
 		SuaCTIcon_label.addMouseListener(controller_SuaCT_SuaPhieuFrame);
+
+
 		controller_btnSua_SuaPhieuFrame controller_btnSua_SuaPhieuFrame = new controller_btnSua_SuaPhieuFrame(
 				this, trangQuanLyPhieuNhap_view);
 		btn_SuaPN.addMouseListener(controller_btnSua_SuaPhieuFrame);
+
 		controller_refreshIcon_SuaPhieuFrame controller_refreshIcon_SuaPhieuFrame = new controller_refreshIcon_SuaPhieuFrame(
 				this);
 		RefreshCTIcon_label.addMouseListener(controller_refreshIcon_SuaPhieuFrame);
@@ -403,7 +407,7 @@ public class SuaPhieuNhap_Frame extends JFrame {
 			model.addRow(new Object[] { chiTietPhieus[i].getMaSP(), chiTietPhieus[i].getNameProduct(),
 					chiTietPhieus[i].getSoLuong(), chiTietPhieus[i].getDonGia() });
 		}
-		this.TongTien_label.setText(String.valueOf(dsChiTietPhieu.Sum_money()));
+		this.GanTongTien_label.setText(String.valueOf(dsChiTietPhieu.Sum_money()));
 	}
 
 	public void TimKiem_CTPhieu() {

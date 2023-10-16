@@ -1,33 +1,36 @@
-package TrangQuanLyHoaDon;
+package TrangQuanPhieuHuy;
 
 import java.awt.Color;
+import java.awt.EventQueue;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.TextField;
 import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import DTO.*;
-import BUS.*;
+import BUS.dsChiTietPhieuBUS;
+import DTO.ChiTietPhieuDTO;
+import DTO.DrinkDTO;
+import DTO.FoodDTO;
+import DTO.PhieuHuyDTO;
+import DTO.ProductsDTO;
+import DTO.Sys;
+import TrangChinh.Button;
+import TrangQuanLyHoaDon.ComboItem;
 
-import javax.swing.JTextField;
-import javax.swing.ImageIcon;
-import javax.swing.JComboBox;
-
-public class ThemHoaDon_Frame extends JFrame {
-
+public class ThemPhieuHuy_Frame extends JFrame {
        private JPanel contentPane;
        private DefaultTableModel modelSP;
        private DefaultTableModel modelCTHD;
@@ -36,8 +39,8 @@ public class ThemHoaDon_Frame extends JFrame {
        private JScrollPane CTHD_scrollPane;
        private JTable CTHD_table;
        private JLabel QLHoaDon_label;
-       private button_custom btn_XoaCT;
-       private button_custom btn_XoaAllCT;
+       private Button btn_XoaCT;
+       private Button btn_XoaAllCT;
        private JPanel ThongTinHD_panel;
        private JLabel MaHD_label;
        private JLabel GanMaHD_label;
@@ -45,17 +48,11 @@ public class ThemHoaDon_Frame extends JFrame {
        private JLabel GanNgay_label;
        private JLabel MaNV_label;
        private JLabel GanMaNV_label;
-       private JLabel TienKhach_label;
-       private JTextField TienKhach_textField;
-       private JLabel TienIcon_label;
        private JLabel TongTien_label;
        private JLabel GanTongTien_label;
-       private JLabel TienDu_label;
-       private JLabel GanTienDu_label;
-       private button_custom btn_ThanhToan;
-       private button_custom btn_LamMoiHD;
-       private button_custom btn_HuyHD;
-       private button_custom btn_ChonVi;
+       private Button btn_ThanhToan;
+       private Button btn_LamMoiHD;
+       private Button btn_HuyHD;
        private JPanel ThongTinSP_panel;
        private JScrollPane SanPham_scrollPane;
        private JTable SanPham_table;
@@ -64,23 +61,19 @@ public class ThemHoaDon_Frame extends JFrame {
        private JLabel ThemCTIcon_label;
        private JLabel LoaiSP_label;
        private JComboBox LoaiSP_comboBox;
+       private JLabel LyDo_label;
        private JLabel RefreshSPIcon_label;
+       private JTextField LyDo_textField;
 
-       private button_custom btn_VanChuyen;
+       private dsChiTietPhieuBUS dsChiTietPhieuBUS;
 
-       private TrangQuanLyHoaDon_view trangQuanLyHoaDon_view;
-       private DanhSachCTHDBUS danhSachCTHD;
+       private TrangQuanLyPhieuHuy trangQuanLyPhieuHuy;
 
-       /**
-        * Create the frame.
-        */
-       public ThemHoaDon_Frame(TrangQuanLyHoaDon_view trangQuanLyHoaDon_view) {
-              // this.listProducts = listProducts;
-              this.trangQuanLyHoaDon_view = trangQuanLyHoaDon_view;
-              this.danhSachCTHD = new DanhSachCTHDBUS();
-              setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+       public ThemPhieuHuy_Frame(TrangQuanLyPhieuHuy trangQuanLyPhieuHuy) {
+              this.trangQuanLyPhieuHuy = trangQuanLyPhieuHuy;
+              this.dsChiTietPhieuBUS = new dsChiTietPhieuBUS();
+              setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
               setBounds(100, 100, 1200, 750);
-              setResizable(false);
               // setBackground(new Color(246,225,195));
               contentPane = new JPanel();
               contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -88,7 +81,7 @@ public class ThemHoaDon_Frame extends JFrame {
               setContentPane(contentPane);
               contentPane.setLayout(null);
 
-              QLHoaDon_label = new JLabel("THÊM HÓA ĐƠN", SwingConstants.CENTER);
+              QLHoaDon_label = new JLabel("THÊM PHIẾU HỦY", SwingConstants.CENTER);
               QLHoaDon_label.setForeground(new Color(97, 113, 67));
               QLHoaDon_label.setFont(new Font("Tahoma", Font.BOLD, 35));
               QLHoaDon_label.setBounds(10, 10, 1176, 40);
@@ -97,7 +90,7 @@ public class ThemHoaDon_Frame extends JFrame {
               CTHD_panel = new JPanel();
               CTHD_panel.setBounds(45, 85, 652, 251);
               CTHD_panel.setBackground(new Color(246, 225, 195));
-              CTHD_panel.setBorder(BorderFactory.createTitledBorder("Chi tiết hóa đơn"));
+              CTHD_panel.setBorder(BorderFactory.createTitledBorder("Chi tiết phiếu hủy"));
               contentPane.add(CTHD_panel);
               CTHD_panel.setLayout(null);
 
@@ -109,6 +102,7 @@ public class ThemHoaDon_Frame extends JFrame {
               CTHD_table.setShowVerticalLines(false);
               CTHD_table.setModel(new DefaultTableModel(
                             new Object[][] {
+                                          { null, null, null, null },
                             },
                             new String[] {
                                           "ID MÓN ĂN", "TÊN MÓN ĂN", "SỐ LƯỢNG", "GIÁ BÁN"
@@ -129,38 +123,36 @@ public class ThemHoaDon_Frame extends JFrame {
               // chinh sua table
               CTHD_table.setBackground(Color.white);
               CTHD_table.getTableHeader().setBackground(new Color(32, 136, 203));
-              CTHD_table.getTableHeader().setFont(new Font("Tahoma", Font.BOLD, 13));
-              CTHD_table.setFont(new Font("Tahoma", Font.BOLD, 12));
               CTHD_table.getTableHeader().setForeground(Color.white);
               CTHD_table.setSelectionBackground(new Color(232, 57, 95));
 
               CTHD_table.setRowHeight(22);
               CTHD_scrollPane.setViewportView(CTHD_table);
 
-              btn_XoaCT = new button_custom("Xóa chi tiết");
+              btn_XoaCT = new Button("Xóa chi tiết");
               btn_XoaCT.setRadius(10);
               btn_XoaCT.setForeground(Color.WHITE);
               btn_XoaCT.setFont(new Font("Tahoma", Font.BOLD, 15));
               btn_XoaCT.setBorderPainted(false);
-              btn_XoaCT.setBounds(477, 140, 121, 35);
+              btn_XoaCT.setBounds(477, 60, 121, 35);
               CTHD_panel.add(btn_XoaCT);
 
-              btn_XoaAllCT = new button_custom("Xóa tất cả");
+              btn_XoaAllCT = new Button("Xóa tất cả");
               btn_XoaAllCT.setRadius(10);
               btn_XoaAllCT.setForeground(Color.WHITE);
               btn_XoaAllCT.setFont(new Font("Tahoma", Font.BOLD, 15));
               btn_XoaAllCT.setBorderPainted(false);
-              btn_XoaAllCT.setBounds(477, 185, 121, 35);
+              btn_XoaAllCT.setBounds(477, 163, 121, 35);
               CTHD_panel.add(btn_XoaAllCT);
 
               ThongTinHD_panel = new JPanel();
               ThongTinHD_panel.setBounds(720, 85, 404, 569);
               ThongTinHD_panel.setBackground(new Color(246, 225, 195));
-              ThongTinHD_panel.setBorder(BorderFactory.createTitledBorder("Hóa đơn"));
+              ThongTinHD_panel.setBorder(BorderFactory.createTitledBorder("Phiếu hủy"));
               contentPane.add(ThongTinHD_panel);
               ThongTinHD_panel.setLayout(null);
 
-              MaHD_label = new JLabel("MÃ HÓA ĐƠN :");
+              MaHD_label = new JLabel("MÃ PHIẾU :");
               MaHD_label.setFont(new Font("Tahoma", Font.BOLD, 12));
               MaHD_label.setBounds(10, 44, 113, 30);
               ThongTinHD_panel.add(MaHD_label);
@@ -190,46 +182,18 @@ public class ThemHoaDon_Frame extends JFrame {
               GanMaNV_label.setBounds(231, 138, 100, 30);
               ThongTinHD_panel.add(GanMaNV_label);
 
-              TienKhach_label = new JLabel("TIỀN KHÁCH ĐƯA :");
-              TienKhach_label.setFont(new Font("Tahoma", Font.BOLD, 12));
-              TienKhach_label.setBounds(10, 248, 138, 30);
-              ThongTinHD_panel.add(TienKhach_label);
-
-              TienKhach_textField = new JTextField();
-              TienKhach_textField.setFont(new Font("Tahoma", Font.PLAIN, 15));
-              TienKhach_textField.setColumns(10);
-              TienKhach_textField.setBorder(BorderFactory.createLineBorder(mau_chu, 2));
-              TienKhach_textField.setBounds(204, 248, 127, 30);
-              ThongTinHD_panel.add(TienKhach_textField);
-
-              TienIcon_label = new JLabel("VND");
-              TienIcon_label.setIcon(new ImageIcon("image_icon\\salary.png"));
-              TienIcon_label.setFont(new Font("Tahoma", Font.BOLD, 13));
-              TienIcon_label.setBounds(338, 248, 66, 30);
-              ThongTinHD_panel.add(TienIcon_label);
-
               TongTien_label = new JLabel("TỔNG TIỀN :");
               TongTien_label.setFont(new Font("Tahoma", Font.BOLD, 12));
               TongTien_label.setBounds(10, 191, 113, 30);
               ThongTinHD_panel.add(TongTien_label);
 
-              GanTongTien_label = new JLabel("0");
+              GanTongTien_label = new JLabel("New label");
               GanTongTien_label.setFont(new Font("Tahoma", Font.BOLD, 13));
               GanTongTien_label.setBounds(231, 191, 109, 30);
               ThongTinHD_panel.add(GanTongTien_label);
 
-              TienDu_label = new JLabel("TIỀN DƯ :");
-              TienDu_label.setFont(new Font("Tahoma", Font.BOLD, 12));
-              TienDu_label.setBounds(10, 313, 113, 30);
-              ThongTinHD_panel.add(TienDu_label);
-
-              GanTienDu_label = new JLabel("0");
-              GanTienDu_label.setFont(new Font("Tahoma", Font.BOLD, 13));
-              GanTienDu_label.setBounds(231, 313, 109, 30);
-              ThongTinHD_panel.add(GanTienDu_label);
-
-              btn_HuyHD = new button_custom("Xóa chi tiết");
-              btn_HuyHD.setText("Hủy hóa đơn");
+              btn_HuyHD = new Button("Xóa chi tiết");
+              btn_HuyHD.setText("Hủy phiếu");
               btn_HuyHD.setRadius(10);
               btn_HuyHD.setForeground(Color.WHITE);
               btn_HuyHD.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -237,7 +201,7 @@ public class ThemHoaDon_Frame extends JFrame {
               btn_HuyHD.setBounds(27, 382, 169, 27);
               ThongTinHD_panel.add(btn_HuyHD);
 
-              btn_LamMoiHD = new button_custom("Xóa chi tiết");
+              btn_LamMoiHD = new Button("Xóa chi tiết");
               btn_LamMoiHD.setText("Làm mới");
               btn_LamMoiHD.setRadius(10);
               btn_LamMoiHD.setForeground(Color.WHITE);
@@ -246,24 +210,15 @@ public class ThemHoaDon_Frame extends JFrame {
               btn_LamMoiHD.setBounds(204, 382, 169, 27);
               ThongTinHD_panel.add(btn_LamMoiHD);
 
-              btn_ThanhToan = new button_custom("Xóa chi tiết");
+              btn_ThanhToan = new Button("Xóa chi tiết");
               btn_ThanhToan.setIcon(new ImageIcon("image_icon\\trolley.png"));
-              btn_ThanhToan.setText("THANH TOÁN");
+              btn_ThanhToan.setText("LẬP PHIẾU");
               btn_ThanhToan.setRadius(10);
               btn_ThanhToan.setForeground(Color.WHITE);
               btn_ThanhToan.setFont(new Font("Tahoma", Font.BOLD, 22));
               btn_ThanhToan.setBorderPainted(false);
               btn_ThanhToan.setBounds(22, 430, 365, 117);
               ThongTinHD_panel.add(btn_ThanhToan);
-
-              btn_ChonVi = new button_custom("Xóa chi tiết");
-		btn_ChonVi.setText("Chọn ví");
-		btn_ChonVi.setRadius(10);
-		btn_ChonVi.setForeground(Color.WHITE);
-		btn_ChonVi.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btn_ChonVi.setBorderPainted(false);
-		btn_ChonVi.setBounds(477, 95, 121, 35);
-		CTHD_panel.add(btn_ChonVi);
 
               ThongTinSP_panel = new JPanel();
               ThongTinSP_panel.setBounds(45, 356, 652, 298);
@@ -282,10 +237,10 @@ public class ThemHoaDon_Frame extends JFrame {
                             new Object[][] {
                             },
                             new String[] {
-                                          "MÃ SP", "TÊN", "SỐ LƯỢNG TỒN", "GIÁ BÁN"
+                                          "MÃ SP", "TÊN", "SỐ LƯỢNG ", "GIÁ BÁN", "NGÀY HẾT HẠN"
                             }) {
                      boolean[] columnEditables = new boolean[] {
-                                   false, false, false, false
+                                   false, false, false, false, true
                      };
 
                      public boolean isCellEditable(int row, int column) {
@@ -299,10 +254,8 @@ public class ThemHoaDon_Frame extends JFrame {
 
               // chinh sua table
               SanPham_table.setBackground(Color.white);
-              SanPham_table.getTableHeader().setFont(new Font("Tahoma", Font.BOLD, 13));
               SanPham_table.getTableHeader().setBackground(new Color(32, 136, 203));
               SanPham_table.getTableHeader().setForeground(Color.white);
-              SanPham_table.setFont(new Font("Tahoma", Font.BOLD, 12));
               SanPham_table.setSelectionBackground(new Color(232, 57, 95));
 
               SanPham_table.setRowHeight(22);
@@ -316,8 +269,7 @@ public class ThemHoaDon_Frame extends JFrame {
               ThongTinSP_panel.add(TimKiemSP_textField);
 
               TimKiemCTIcon_label = new JLabel("");
-              TimKiemCTIcon_label
-                            .setIcon(new ImageIcon("image_icon\\search.png"));
+              TimKiemCTIcon_label.setIcon(new ImageIcon("image_icon\\search.png"));
               TimKiemCTIcon_label.setBounds(219, 35, 32, 32);
               ThongTinSP_panel.add(TimKiemCTIcon_label);
 
@@ -331,59 +283,64 @@ public class ThemHoaDon_Frame extends JFrame {
               LoaiSP_comboBox.setBounds(437, 38, 114, 27);
               ThongTinSP_panel.add(LoaiSP_comboBox);
 
-              btn_VanChuyen = new button_custom("Xóa chi tiết");
-		btn_VanChuyen.setText("Vận chuyển");
-		btn_VanChuyen.setRadius(10);
-		btn_VanChuyen.setForeground(Color.WHITE);
-		btn_VanChuyen.setFont(new Font("Tahoma", Font.BOLD, 15));
-		btn_VanChuyen.setBorderPainted(false);
-		btn_VanChuyen.setBounds(477, 50, 121, 35);
-		CTHD_panel.add(btn_VanChuyen);
-
               LoaiSP_label = new JLabel("Loại SP :");
               LoaiSP_label.setFont(new Font("Tahoma", Font.BOLD, 12));
               LoaiSP_label.setBounds(362, 35, 113, 30);
               ThongTinSP_panel.add(LoaiSP_label);
 
               RefreshSPIcon_label = new JLabel("");
-              RefreshSPIcon_label
-                            .setIcon(new ImageIcon("image_icon\\refresh.png"));
+              RefreshSPIcon_label.setIcon(new ImageIcon("image_icon\\refresh.png"));
               RefreshSPIcon_label.setBounds(608, 233, 32, 32);
               ThongTinSP_panel.add(RefreshSPIcon_label);
 
+              LyDo_label = new JLabel("LÝ DO:");
+              LyDo_label.setFont(new Font("Tahoma", Font.BOLD, 12));
+              LyDo_label.setBounds(10, 231, 113, 30);
+              ThongTinHD_panel.add(LyDo_label);
+
+              LyDo_textField = new JTextField();
+              LyDo_textField.setFont(new Font("Tahoma", Font.PLAIN, 15));
+              LyDo_textField.setColumns(10);
+              LyDo_textField.setBorder(BorderFactory.createLineBorder(mau_chu, 2));
+              LyDo_textField.setBounds(10, 278, 363, 94);
+              ThongTinHD_panel.add(LyDo_textField);
+
               setLoaiSP();
               refresh_table_SP();
-              controller_XoaAllCT_ThemHDFrame controller_XoaAllCT_ThemHDFrame = new controller_XoaAllCT_ThemHDFrame(this);
-		btn_XoaAllCT.addMouseListener(controller_XoaAllCT_ThemHDFrame);
-		controller_XoaClickCT_ThemHDFrame controller_XoaClickCT_ThemHDFrame = new controller_XoaClickCT_ThemHDFrame(this);
-		btn_XoaCT.addMouseListener(controller_XoaClickCT_ThemHDFrame);
-		controller_TimKiemSPDanhMuc_ThemHDFrame timKiemSPDanhMuc_ThemHDFrame = new controller_TimKiemSPDanhMuc_ThemHDFrame(this);
-		LoaiSP_comboBox.addActionListener(timKiemSPDanhMuc_ThemHDFrame);
-		controller_TimKiemSP_ThemHDFrame controller_TimKiemSP_ThemHDFrame = new controller_TimKiemSP_ThemHDFrame(this);
-		TimKiemCTIcon_label.addMouseListener(controller_TimKiemSP_ThemHDFrame);
 
-		controller_themCTHD_ThemHD controller_themCTHD_ThemHD = new controller_themCTHD_ThemHD(this);
-		ThemCTIcon_label.addMouseListener(controller_themCTHD_ThemHD);
+              controller_XoaAllCT_ThemPHFrame controller_XoaAllCT_ThemHDFrame = new controller_XoaAllCT_ThemPHFrame(
+                            this);
+              btn_XoaAllCT.addMouseListener(controller_XoaAllCT_ThemHDFrame);
 
-		controller_btnHuy_ThemHDFrame controller_btnHuy_ThemHDFrame = new controller_btnHuy_ThemHDFrame(this);
-		btn_HuyHD.addMouseListener(controller_btnHuy_ThemHDFrame);
+              controller_XoaClickCT_ThemPHFrame controller_XoaClickCT_ThemHDFrame = new controller_XoaClickCT_ThemPHFrame(
+                            this);
+              btn_XoaCT.addMouseListener(controller_XoaClickCT_ThemHDFrame);
 
-		controller_btnLamMoi_ThemHD controller_btnLamMoi_ThemHD = new controller_btnLamMoi_ThemHD(this);
-		btn_LamMoiHD.addMouseListener(controller_btnLamMoi_ThemHD);
+              controller_TimKiemSPDanhMuc_ThemPHFrame timKiemSPDanhMuc_ThemHDFrame = new controller_TimKiemSPDanhMuc_ThemPHFrame(
+                            this);
+              LoaiSP_comboBox.addActionListener(timKiemSPDanhMuc_ThemHDFrame);
 
-		controller_btnThanhToan_ThemHD controller_btnThanhToan_ThemHD = new controller_btnThanhToan_ThemHD(this);
-		btn_ThanhToan.addMouseListener(controller_btnThanhToan_ThemHD);
+              controller_TimKiemSP_ThemPHFrame controller_TimKiemSP_ThemHDFrame = new controller_TimKiemSP_ThemPHFrame(
+                            this);
+              TimKiemCTIcon_label.addMouseListener(controller_TimKiemSP_ThemHDFrame);
 
-		controller_TinhTienDu_ThemHD controller_TinhTienDu_ThemHD = new controller_TinhTienDu_ThemHD(this);
-		TienKhach_textField.addKeyListener(controller_TinhTienDu_ThemHD);
-              
-		controller_refreshSP_ThemHDFrame controller_refreshSP_ThemHDFrame = new controller_refreshSP_ThemHDFrame(this);
-		RefreshSPIcon_label.addMouseListener(controller_refreshSP_ThemHDFrame);
+              controller_themCTPH_ThemPH controller_themCTHD_ThemHD = new controller_themCTPH_ThemPH(this);
+              ThemCTIcon_label.addMouseListener(controller_themCTHD_ThemHD);
 
+              controller_btnHuy_ThemPHFrame controller_btnHuy_ThemHDFrame = new controller_btnHuy_ThemPHFrame(this);
+              btn_HuyHD.addMouseListener(controller_btnHuy_ThemHDFrame);
 
+              controller_btnLamMoi_ThemPH controller_btnLamMoi_ThemHD = new controller_btnLamMoi_ThemPH(this);
+              btn_LamMoiHD.addMouseListener(controller_btnLamMoi_ThemHD);
 
-		setVisible(true);
-              
+              controller_btnThanhToan_ThemPH controller_btnThanhToan_ThemHD = new controller_btnThanhToan_ThemPH(this);
+              btn_ThanhToan.addMouseListener(controller_btnThanhToan_ThemHD);
+
+              controller_refreshSP_ThemPHFrame controller_refreshSP_ThemHDFrame = new controller_refreshSP_ThemPHFrame(
+                            this);
+              RefreshSPIcon_label.addMouseListener(controller_refreshSP_ThemHDFrame);
+
+              setVisible(true);
        }
 
        public void setLoaiSP() {
@@ -404,12 +361,11 @@ public class ThemHoaDon_Frame extends JFrame {
               return GanNgay_label;
        }
 
-       // danh muc san pham
        public void TimKiemSP_TuKhoa() {
               String tuKhoa = this.TimKiemSP_textField.getText();
               modelSP = (DefaultTableModel) SanPham_table.getModel();
               if (tuKhoa != null) {
-                     ArrayList<ProductsDTO> list_search = this.trangQuanLyHoaDon_view.getListProducts()
+                     ArrayList<ProductsDTO> list_search = this.trangQuanLyPhieuHuy.getListProducts()
                                    .timtheoKey_2(tuKhoa);
                      int number_row = modelSP.getRowCount();
                      for (int i = number_row - 1; i >= 0; i--) {
@@ -431,7 +387,7 @@ public class ThemHoaDon_Frame extends JFrame {
                      for (int i = number_row - 1; i >= 0; i--) {
                             modelSP.removeRow(i);
                      }
-                     for (ProductsDTO products : this.trangQuanLyHoaDon_view.getListProducts().getArr()) {
+                     for (ProductsDTO products : this.trangQuanLyPhieuHuy.getListProducts().getArr()) {
                             if (products instanceof FoodDTO) {
                                    add_dataSP_Table(products);
                             }
@@ -441,12 +397,29 @@ public class ThemHoaDon_Frame extends JFrame {
                      for (int i = number_row - 1; i >= 0; i--) {
                             modelSP.removeRow(i);
                      }
-                     for (ProductsDTO products : this.trangQuanLyHoaDon_view.getListProducts().getArr()) {
+                     for (ProductsDTO products : this.trangQuanLyPhieuHuy.getListProducts().getArr()) {
                             if (products instanceof DrinkDTO) {
                                    add_dataSP_Table(products);
                             }
                      }
               }
+       }
+
+       public void add_dataSP_Table(ProductsDTO products) {
+              modelSP = (DefaultTableModel) SanPham_table.getModel();
+              modelSP.addRow(new Object[] {
+                            products.getMaSP(), products.getNameProduct(), products.getSl_conlai(), products.getPrice(),
+                            products.getExpiry_date()
+              });
+       }
+
+       public void add_dataCTHD_Table(ChiTietPhieuDTO chiTietPhieuDTO) {
+              refresh_table_SP();
+              modelCTHD = (DefaultTableModel) CTHD_table.getModel();
+              modelCTHD.addRow(new Object[] {
+                            chiTietPhieuDTO.getMaSP(), chiTietPhieuDTO.getNameProduct(), chiTietPhieuDTO.getSoLuong(),
+                            chiTietPhieuDTO.getDonGia()
+              });
        }
 
        public void refresh_table_SP() {
@@ -461,7 +434,7 @@ public class ThemHoaDon_Frame extends JFrame {
        public void Load_DSProducts_from_data_after_change() {
 
               // this.dSachNhaCC.setCount(data.size());
-              for (ProductsDTO products : this.trangQuanLyHoaDon_view.getListProducts().getArr()) {
+              for (ProductsDTO products : this.trangQuanLyPhieuHuy.getListProducts().getArr()) {
                      add_dataSP_Table(products);
               }
        }
@@ -469,7 +442,7 @@ public class ThemHoaDon_Frame extends JFrame {
        public ProductsDTO Click_table_SP() {
               try {
                      int click = this.SanPham_table.getSelectedRow();
-                     ProductsDTO products = this.trangQuanLyHoaDon_view.getListProducts().getArr().get(click);
+                     ProductsDTO products = this.trangQuanLyPhieuHuy.getListProducts().getArr().get(click);
                      return products;
               } catch (Exception e) {
                      // JOptionPane.showConfirmDialog(null, "HÃY CLICK CHỌN MỘT SẢN PHẨM TRONG BẢNG",
@@ -488,27 +461,31 @@ public class ThemHoaDon_Frame extends JFrame {
               modelCTHD = (DefaultTableModel) CTHD_table.getModel();
               if (sp != null) {
                      try {
-                            String soluong = JOptionPane.showInputDialog(null, "Nhập số lượng cần mua", "Thông báo",
+                            String soluong = JOptionPane.showInputDialog(null, "Nhập số lượng cần hủy", "Thông báo",
                                           JOptionPane.OK_OPTION);
                             if (Sys.takeIntegerInput_2(soluong)) {
                                    int soluongMua = Integer.parseInt(soluong);
                                    if (sp.sell(soluongMua)) {
-                                          ChiTietHDDTO moi = new ChiTietHDDTO(sp.getMaSP(), soluongMua, sp.getPrice());
+                                          ChiTietPhieuDTO moi = new ChiTietPhieuDTO(sp.getNameProduct(), sp.getMaSP(),
+                                                        soluongMua, sp.getPrice());
                                           int flag = 0;
-
-                                          for (ChiTietHDDTO chiTietHD : danhSachCTHD.getCthd()) {
-                                                 if (moi.getMaSP().equals(chiTietHD.getMaSP())) {
-                                                        flag = 1;
-                                                        chiTietHD.setSoluong(chiTietHD.getSoluong() + moi.getSoluong());
-                                                        break;
+                                          if (dsChiTietPhieuBUS.Isemtpy() == false) {
+                                                 for (ChiTietPhieuDTO chiTietPhieuDTO : dsChiTietPhieuBUS
+                                                               .getChiTietPhieu2s()) {
+                                                        if (moi.getMaSP().equals(chiTietPhieuDTO.getMaSP()) && chiTietPhieuDTO != null) {
+                                                               flag = 1;
+                                                               chiTietPhieuDTO.setSoLuong((chiTietPhieuDTO.getSoLuong()
+                                                                             + moi.getSoLuong()));
+                                                               break;
+                                                        }
                                                  }
                                           }
                                           if (flag == 0) {
-                                                 this.danhSachCTHD.add(moi);
+                                                 this.dsChiTietPhieuBUS.add(moi);
                                           }
-                                          setTongTien(this.danhSachCTHD.tinhTongTien());
+                                          setTongTien(this.dsChiTietPhieuBUS.Sum_money());
                                           String nameSP = "";
-                                          for (ProductsDTO iterable_element : this.trangQuanLyHoaDon_view
+                                          for (ProductsDTO iterable_element : this.trangQuanLyPhieuHuy
                                                         .getListProducts().getArr()) {
                                                  if (sp.getMaSP().equals(iterable_element.getMaSP())) {
                                                         nameSP = iterable_element.getNameProduct();
@@ -519,16 +496,12 @@ public class ThemHoaDon_Frame extends JFrame {
                                           for (int i = number_row - 1; i >= 0; i--) {
                                                  modelCTHD.removeRow(i);
                                           }
-                                          for (ChiTietHDDTO chiTietHD : this.danhSachCTHD.getCthd()) {
-                                                 String nameSp = "";
-                                                 for (ProductsDTO products : this.trangQuanLyHoaDon_view
-                                                               .getListProducts().getArr()) {
-                                                        if (chiTietHD.getMaSP().equals(products.getMaSP())) {
-                                                               nameSp = products.getNameProduct();
-                                                               break;
-                                                        }
-                                                 }
-                                                 add_dataCTHD_Table(chiTietHD, nameSp);
+                                          for (ChiTietPhieuDTO chiTietPhieuDTO : this.dsChiTietPhieuBUS
+                                                        .getChiTietPhieu2s()) {
+                                                               if(chiTietPhieuDTO != null){
+                                                                      add_dataCTHD_Table(chiTietPhieuDTO);
+                                                               }
+                                                 
                                           }
 
                                    } else {
@@ -548,34 +521,115 @@ public class ThemHoaDon_Frame extends JFrame {
                             }
 
                      } catch (Exception e) {
-                            Sys.Sound_Error();
-                            Sys.Error_dialog("SAI DỮ LIỆU");
+                            // Sys.Sound_Error();
+                            // Sys.Error_dialog("SAI DỮ LIỆU");
+                            e.printStackTrace();
 
                      }
               }
        }
 
-       public void add_dataSP_Table(ProductsDTO products) {
-              modelSP = (DefaultTableModel) SanPham_table.getModel();
-              modelSP.addRow(new Object[] {
-                            products.getMaSP(), products.getNameProduct(), products.getSl_conlai(), products.getPrice()
-              });
+       public void setTongTien(int tongtien) {
+              this.GanTongTien_label.setText(String.valueOf(tongtien));
        }
 
-       public void add_dataCTHD_Table(ChiTietHDDTO chiTietHD, String nameSP) {
-              refresh_table_SP();
+       public JLabel getMaHD_label() {
+              return MaHD_label;
+       }
+
+       public void btnHuyPhieu() {
+              for (ProductsDTO products : this.trangQuanLyPhieuHuy.getListProducts().getArr()) {
+                     products.setSl_conlai(products.getSoluong());
+              }
+              this.trangQuanLyPhieuHuy.setCheck_open_Jrame(0);
+              this.setVisible(false);
+              this.dispose();
+       }
+
+       public void btnLamMoiHD() {
+              setTongTien(0);
+              xoaCTHD_all();
+       }
+
+       public void xoaCTHD_all() {
               modelCTHD = (DefaultTableModel) CTHD_table.getModel();
-              modelCTHD.addRow(new Object[] {
-                            chiTietHD.getMaSP(), nameSP, chiTietHD.getSoluong(), chiTietHD.getGia()
-              });
+              int number_row = modelCTHD.getRowCount();
+              for (int i = number_row - 1; i >= 0; i--) {
+                     modelCTHD.removeRow(i);
+              }
+              this.dsChiTietPhieuBUS = new dsChiTietPhieuBUS();
+              for (ProductsDTO products : this.trangQuanLyPhieuHuy.getListProducts().getArr()) {
+                     products.setSl_conlai(products.getSoluong());
+              }
+              refresh_table_SP();
        }
 
-       // CTHD
-       public ChiTietHDDTO Click_table_CTHD() {
+       public void btnHuyHoaDon() {
+              for (ProductsDTO products : this.trangQuanLyPhieuHuy.getListProducts().getArr()) {
+                     products.setSl_conlai(products.getSoluong());
+              }
+              this.trangQuanLyPhieuHuy.setCheck_open_Jrame(0);
+              this.setVisible(false);
+              this.dispose();
+       }
+
+       public void btnLapPhieu() {
+              String maHd = this.GanMaHD_label.getText();
+              String maNv = this.GanMaNV_label.getText();
+              String date = this.GanNgay_label.getText();
+              String lyDo = this.LyDo_textField.getText();
+              if (lyDo.equals("")) {
+                     lyDo = "Hết hạn";
+              }
+              if (dsChiTietPhieuBUS.Isemtpy() == false) {
+                     PhieuHuyDTO phieuHuyDTO = new PhieuHuyDTO(maHd, date, dsChiTietPhieuBUS,
+                                   dsChiTietPhieuBUS.Sum_money(),
+                                   maNv, lyDo);
+
+                     if (trangQuanLyPhieuHuy.getDsPhieuHuyBUS().add_2(phieuHuyDTO)) {
+                            this.trangQuanLyPhieuHuy.setCheck_open_Jrame(0);
+                            Sys.Sound_Success();
+                            Sys.Success_dialog("THÊM THÀNH CÔNG");
+                            this.setVisible(false);
+                            this.dispose();
+                     } else {
+                            Sys.Sound_Error();
+                            Sys.Error_dialog("THÊM KHÔNG THÀNH CÔNG (Lỗi dữ liệu)");
+                     }
+              }
+
+       }
+
+       public void xoaCTHD_duocchon() {
+              ChiTietPhieuDTO chiTiet = Click_table_CTHD();
+              modelCTHD = (DefaultTableModel) CTHD_table.getModel();
+              if (chiTiet != null) {
+                     int click = this.CTHD_table.getSelectedRow();
+                     String maSP = chiTiet.getMaSP();
+                     for (ProductsDTO products : this.trangQuanLyPhieuHuy.getListProducts().getArr()) {
+                            if (products.getMaSP().equals(maSP)) {
+                                   products.setSl_conlai(products.getSoluong());
+                                   refresh_table_SP();
+                                   break;
+                            }
+                     }
+                     modelCTHD.removeRow(click);
+                     this.dsChiTietPhieuBUS.remove(maSP);
+              } else {
+                     // JOptionPane.showConfirmDialog(null, "HÃY CLICK CHỌN MỘT CHI TIẾT TRONG BẢNG",
+                     // "Thông báo",
+                     // JOptionPane.ERROR_MESSAGE);
+                     Sys.Sound_Error();
+                     Sys.Warning_dialog("HÃY CLICK CHỌN MỘT CHI TIẾT TRONG BẢNG");
+
+              }
+       }
+
+       public ChiTietPhieuDTO Click_table_CTHD() {
               try {
                      int click = this.CTHD_table.getSelectedRow();
-                     ChiTietHDDTO chiTietHD = this.danhSachCTHD.getCthd().get(click);
-                     return chiTietHD;
+                     ChiTietPhieuDTO chiTiet = this.dsChiTietPhieuBUS.getChiTietPhieu2s()[click];
+                     return chiTiet;
               } catch (Exception e) {
                      // JOptionPane.showConfirmDialog(null, "HÃY CLICK CHỌN MỘT SẢN PHẨM TRONG BẢNG",
                      // "Thông báo",
@@ -588,115 +642,4 @@ public class ThemHoaDon_Frame extends JFrame {
 
        }
 
-       public void xoaCTHD_duocchon() {
-              ChiTietHDDTO chiTietHD = Click_table_CTHD();
-              modelCTHD = (DefaultTableModel) CTHD_table.getModel();
-              if (chiTietHD != null) {
-                     int click = this.CTHD_table.getSelectedRow();
-                     String maSP = chiTietHD.getMaSP();
-                     for (ProductsDTO products : this.trangQuanLyHoaDon_view.getListProducts().getArr()) {
-                            if (products.getMaSP().equals(maSP)) {
-                                   products.setSl_conlai(products.getSoluong());
-                                   refresh_table_SP();
-                                   break;
-                            }
-                     }
-                     modelCTHD.removeRow(click);
-                     this.danhSachCTHD.getCthd().remove(chiTietHD);
-              } else {
-                     // JOptionPane.showConfirmDialog(null, "HÃY CLICK CHỌN MỘT CHI TIẾT TRONG BẢNG",
-                     // "Thông báo",
-                     // JOptionPane.ERROR_MESSAGE);
-                     Sys.Sound_Error();
-                     Sys.Warning_dialog("HÃY CLICK CHỌN MỘT CHI TIẾT TRONG BẢNG");
-
-              }
-       }
-
-       public void xoaCTHD_all() {
-              modelCTHD = (DefaultTableModel) CTHD_table.getModel();
-              int number_row = modelCTHD.getRowCount();
-              for (int i = number_row - 1; i >= 0; i--) {
-                     modelCTHD.removeRow(i);
-              }
-              this.danhSachCTHD.getCthd().clear();
-              for (ProductsDTO products : this.trangQuanLyHoaDon_view.getListProducts().getArr()) {
-                     products.setSl_conlai(products.getSoluong());
-              }
-              refresh_table_SP();
-       }
-
-       // thong tin hoa don
-       public void setTongTien(int tongtien) {
-              this.GanTongTien_label.setText(String.valueOf(tongtien));
-              this.GanTienDu_label.setText("-" + String.valueOf(tongtien));
-              this.TienKhach_textField.setText("0");
-       }
-
-       public void TinhTienDu() {
-              try {
-                     float tongtien = Float.parseFloat(this.GanTongTien_label.getText());
-                     float tienkhachdua = Float.parseFloat(this.TienKhach_textField.getText());
-                     float tiendu = tienkhachdua - tongtien;
-                     this.GanTienDu_label.setText(String.valueOf(tiendu));
-
-              } catch (Exception e) {
-                     // JOptionPane.showConfirmDialog(null, "HÃY NHẬP SỐ", "Thông báo",
-                     // JOptionPane.ERROR_MESSAGE);
-                     Sys.Error_dialog("HÃY NHẬP SỐ");
-                     Sys.Sound_Error();
-                     this.TienKhach_textField.setText("0");
-              }
-       }
-
-       public void btnHuyHoaDon() {
-              for (ProductsDTO products : this.trangQuanLyHoaDon_view.getListProducts().getArr()) {
-                     products.setSl_conlai(products.getSoluong());
-              }
-              this.trangQuanLyHoaDon_view.setCheck_open_Jrame(0);
-              this.setVisible(false);
-              this.dispose();
-       }
-
-       public void btnLamMoiHD() {
-              setTongTien(0);
-              xoaCTHD_all();
-       }
-
-       public void btnThanhToan() {
-
-              float tinhtien = Float.valueOf(this.GanTienDu_label.getText());
-              String maHd = this.GanMaHD_label.getText();
-              String maNv = this.GanMaNV_label.getText();
-              String date = this.GanNgay_label.getText();
-
-              HoaDonDTO moi = new HoaDonDTO(maHd, maNv, date, this.danhSachCTHD.tinhTongTien(), danhSachCTHD,
-                            "Đang chờ xác nhận");
-
-              if (tinhtien >= 0) {
-                     if (moi.getDsCTHD().getCthd() != null) {
-                            if (this.trangQuanLyHoaDon_view.ThemHoaDon_vaoDATA(moi)) {
-                                   this.trangQuanLyHoaDon_view.setCheck_open_Jrame(0);
-                                   this.trangQuanLyHoaDon_view
-                                                 .setTienkhachdua(Float.valueOf(this.TienKhach_textField.getText()));
-                                   this.setVisible(false);
-                                   this.dispose();
-                            }
-                     } else {
-                            // JOptionPane.showConfirmDialog(null, "THÊM KHÔNG THÀNH CÔNG (Lỗi dữ liệu)",
-                            // "Thông báo ",
-                            // JOptionPane.INFORMATION_MESSAGE);
-                            Sys.Sound_Error();
-                            Sys.Error_dialog("THÊM KHÔNG THÀNH CÔNG (Lỗi dữ liệu)");
-
-                     }
-              } else {
-                     // JOptionPane.showConfirmDialog(null, "KHÁCH ĐƯA KHÔNG ĐỦ TIỀN", "Thông báo ",
-                     // JOptionPane.INFORMATION_MESSAGE);
-                     Sys.Sound_Error();
-                     Sys.Error_dialog("KHÁCH ĐƯA KHÔNG ĐỦ TIỀN");
-
-              }
-
-       }
 }

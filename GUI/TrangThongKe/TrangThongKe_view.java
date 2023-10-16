@@ -56,7 +56,7 @@ public class TrangThongKe_view extends JPanel {
 		btn_PhieuNhap.setBounds(272, 180, 220, 54);
 		add(btn_PhieuNhap);
 		
-		btn_PhieuXuat = new button_custom("Thống kê phiếu xuất");
+		btn_PhieuXuat = new button_custom("Thống kê phiếu hủy");
 		btn_PhieuXuat.setRadius(10);
 		btn_PhieuXuat.setForeground(Color.WHITE);
 		btn_PhieuXuat.setFont(new Font("Tahoma", Font.BOLD, 15));

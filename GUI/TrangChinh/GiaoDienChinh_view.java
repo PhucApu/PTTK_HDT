@@ -49,13 +49,14 @@ public class GiaoDienChinh_view extends JFrame {
        private dsPhieuXuatBUS dsPhieuXuat;
        private DanhSachHDBUS danhSachHD;
        private ThongKeDTO thongKe;
+       private dsPhieuHuyBUS dsPhieuHuyBUS;
        private DangNhap_view dangNhap_view;
 
        private TrangChinh_Menu_view_2 tranhChinh_Menu_view_2;
 
        public GiaoDienChinh_view(StaffDTO staff, DanhSachNhaCCBUS danhSachNhaCC, dsPhieuNhapBUS dsPhieuNhap,
                      ListProductsBUS listProducts, StaffsBUS staffs, dsPhieuXuatBUS dsPhieuXuat,
-                     DanhSachHDBUS danhSachHD, ThongKeDTO thongKe, DangNhap_view dangNhap_view) {
+                     DanhSachHDBUS danhSachHD, ThongKeDTO thongKe,dsPhieuHuyBUS dsPhieuHuyBUS, DangNhap_view dangNhap_view) {
               this.staff = staff;
               this.danhSachNhaCC = danhSachNhaCC;
               this.dsPhieuNhap = dsPhieuNhap;
@@ -65,6 +66,7 @@ public class GiaoDienChinh_view extends JFrame {
               this.dsPhieuXuat = dsPhieuXuat;
               this.danhSachHD = danhSachHD;
               this.thongKe = thongKe;
+              this.dsPhieuHuyBUS = dsPhieuHuyBUS;
               setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
               setBounds(100, 100, 1219, 619);
               setResizable(false);
@@ -141,7 +143,7 @@ public class GiaoDienChinh_view extends JFrame {
 
               btnQunLPhiu_2 = new Button("");
               btnQunLPhiu_2.setIcon(new ImageIcon("image_icon\\import_2.png"));
-              btnQunLPhiu_2.setText("QUẢN LÝ PHIẾU XUẤT");
+              btnQunLPhiu_2.setText("QUẢN LÝ PHIẾU HỦY");
               btnQunLPhiu_2.setRadius(20);
               btnQunLPhiu_2.setHorizontalAlignment(SwingConstants.CENTER);
               btnQunLPhiu_2.setForeground(Color.WHITE);
@@ -632,37 +634,37 @@ public class GiaoDienChinh_view extends JFrame {
        // di chuyen giua cac page
        public void btn_NhaCC() {
               this.tranhChinh_Menu_view_2 = new TrangChinh_Menu_view_2(3, staff, this.danhSachNhaCC, this.dsPhieuNhap,
-                            this.listProducts, this.staffs, dsPhieuXuat, danhSachHD, thongKe, this);
+                            this.listProducts, this.staffs, dsPhieuXuat, danhSachHD, thongKe,dsPhieuHuyBUS, this);
        }
 
        public void btn_PhieuNhap() {
               this.tranhChinh_Menu_view_2 = new TrangChinh_Menu_view_2(4, staff, this.danhSachNhaCC, this.dsPhieuNhap,
-                            this.listProducts, this.staffs, dsPhieuXuat, danhSachHD, thongKe, this);
+                            this.listProducts, this.staffs, dsPhieuXuat, danhSachHD, thongKe,dsPhieuHuyBUS, this);
        }
 
        public void btn_NhanVien() {
               this.tranhChinh_Menu_view_2 = new TrangChinh_Menu_view_2(1, staff, danhSachNhaCC, dsPhieuNhap,
-                            listProducts, staffs, dsPhieuXuat, danhSachHD, thongKe, this);
+                            listProducts, staffs, dsPhieuXuat, danhSachHD, thongKe,dsPhieuHuyBUS, this);
        }
 
        public void btn_Kho() {
               this.tranhChinh_Menu_view_2 = new TrangChinh_Menu_view_2(6, staff, danhSachNhaCC, dsPhieuNhap,
-                            listProducts, staffs, dsPhieuXuat, danhSachHD, thongKe, this);
+                            listProducts, staffs, dsPhieuXuat, danhSachHD, thongKe,dsPhieuHuyBUS, this);
        }
 
        public void btn_PhieuXuat() {
               this.tranhChinh_Menu_view_2 = new TrangChinh_Menu_view_2(5, staff, danhSachNhaCC, dsPhieuNhap,
-                            listProducts, staffs, dsPhieuXuat, danhSachHD, thongKe, this);
+                            listProducts, staffs, dsPhieuXuat, danhSachHD, thongKe,dsPhieuHuyBUS, this);
        }
 
        public void btn_HoaDon() {
               this.tranhChinh_Menu_view_2 = new TrangChinh_Menu_view_2(2, staff, danhSachNhaCC, dsPhieuNhap,
-                            listProducts, staffs, dsPhieuXuat, danhSachHD, thongKe, this);
+                            listProducts, staffs, dsPhieuXuat, danhSachHD, thongKe,dsPhieuHuyBUS, this);
        }
 
        public void btn_ThongKe() {
               this.tranhChinh_Menu_view_2 = new TrangChinh_Menu_view_2(7, staff, danhSachNhaCC, dsPhieuNhap,
-                            listProducts, staffs, dsPhieuXuat, danhSachHD, thongKe, this);
+                            listProducts, staffs, dsPhieuXuat, danhSachHD, thongKe,dsPhieuHuyBUS, this);
        }
 
        public static void main(String[] args) {

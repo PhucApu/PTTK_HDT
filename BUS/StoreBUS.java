@@ -9,6 +9,7 @@ public class StoreBUS {
     public dsPhieuXuatBUS dsPhieuXuat;
     public DanhSachNhaCCBUS danhSachNhaCC;
     public ListProductsBUS listProducts;
+    public dsPhieuHuyBUS dsPhieuHuyBUS;
 
     public StoreBUS() {
        // loadStaffsToDB();
@@ -86,6 +87,10 @@ public class StoreBUS {
 //     }
 
     // load danh sach tu database
+
+
+    
+
     public DanhSachNhaCCBUS load_DanhSachNhaCC_2(){
         ArrayList<SupplierDTO> data = getDataFromDAOBUS.getList_Supplier_fromDATA();
         
@@ -153,6 +158,18 @@ public class StoreBUS {
         }
         this.danhSachHD = new DanhSachHDBUS(data_HoaDon);
         return this.danhSachHD;
+    }
+    public dsPhieuHuyBUS load_DanhSachPhieuHuy_2(){
+        ArrayList<PhieuHuyDTO> data = getDataFromDAOBUS.getList_PhieuHuy_fromDATA();
+        
+        if( data != null){
+            dsPhieuHuyBUS temp = new dsPhieuHuyBUS(data);
+            temp.setDsPhieunhap(data);
+            this.dsPhieuHuyBUS = temp;
+            return this.dsPhieuHuyBUS;
+        }
+        this.dsPhieuHuyBUS = new dsPhieuHuyBUS(listProducts) ;
+        return this.dsPhieuHuyBUS;
     }
 
 

@@ -83,6 +83,28 @@ public class Sys implements Serializable {
         return null;
     }
 
+    public static boolean CheckExpire(String date) {
+        String[] part = date.split("/");
+        int day = Integer.parseInt(part[0]);
+        int month = Integer.parseInt(part[1]);
+        int year = Integer.parseInt(part[2]);
+
+        String[] part2 = getDateNow().split("/");
+        int day2 = Integer.parseInt(part2[0]);
+        int month2 = Integer.parseInt(part2[1]);
+        int year2 = Integer.parseInt(part2[2]);
+
+        int month_end = month2 - month;
+        if(year < year2){
+            return true;
+        }
+        else if(month_end > 2){
+            return true;
+        }
+        return false;
+
+    }
+
     public static void Sound_Click() {
         try {
             File file = new File("image_icon\\mixkit-arcade-game-jump-coin-216.wav");
@@ -654,7 +676,7 @@ public class Sys implements Serializable {
         return day + "/" + month + "/" + year_ex;
     }
 
-    public static String takeDayFormat_(String date){
+    public static String takeDayFormat_(String date) {
         String[] part = date.split("/");
         int day = Integer.parseInt(part[0]);
         int month = Integer.parseInt(part[1]);
@@ -955,7 +977,7 @@ public class Sys implements Serializable {
     }
 
     // tao file Excel
-    public static boolean createExcelFile(String namepath){
+    public static boolean createExcelFile(String namepath) {
         boolean taoFile = false;
         try {
             File file = new File(namepath);
@@ -1058,7 +1080,7 @@ public class Sys implements Serializable {
                     }
                     break;
                 }
-                
+
             } catch (Exception e) {
                 flag = 1;
                 e.printStackTrace();
@@ -1271,7 +1293,7 @@ public class Sys implements Serializable {
             cell_day.setCellValue("Ngày thống kê: ");
             for (int i = 1; i < 3; i++) {
                 cell_day = row_day.createCell(i);
-                cell_day.setCellValue(NgayThongKe.get(i-1));
+                cell_day.setCellValue(NgayThongKe.get(i - 1));
             }
             // ghi ma sp
             XSSFRow row_maSP = work_sheet.createRow(1);
@@ -1341,14 +1363,15 @@ public class Sys implements Serializable {
             flag = 1;
             e.printStackTrace();
         }
-        if(flag == 1){
+        if (flag == 1) {
             return false;
         }
         return true;
     }
 
     public static boolean writeExcel_TKPhieuXuat(String pathname, ArrayList<String> NgayThongKe, ArrayList<String> maSP,
-            ArrayList<String> nameSP, ArrayList<Double> phantramSP, ArrayList<String> maPhieu, ArrayList<String> maNv) throws IOException {
+            ArrayList<String> nameSP, ArrayList<Double> phantramSP, ArrayList<String> maPhieu, ArrayList<String> maNv)
+            throws IOException {
 
         FileOutputStream file = new FileOutputStream(pathname);
         XSSFWorkbook wb = new XSSFWorkbook(); // dua ve dang file excel
@@ -1362,7 +1385,7 @@ public class Sys implements Serializable {
             cell_day.setCellValue("Ngày thống kê: ");
             for (int i = 1; i < 3; i++) {
                 cell_day = row_day.createCell(i);
-                cell_day.setCellValue(NgayThongKe.get(i-1));
+                cell_day.setCellValue(NgayThongKe.get(i - 1));
             }
             // ghi ma sp
             XSSFRow row_maSP = work_sheet.createRow(1);
@@ -1398,7 +1421,7 @@ public class Sys implements Serializable {
             XSSFRow row_ph = work_sheet.createRow(4);
             XSSFCell cell_ph;
             cell_ph = row_ph.createCell(0);
-            cell_ph.setCellValue("Phiếu xuất có tổng tiền lớn nhất: ");
+            cell_ph.setCellValue("Phiếu hủy có tổng tiền lớn nhất: ");
             int size5 = maPhieu.size();
             for (int i = 1; i <= size5; i++) {
                 cell_ph = row_ph.createCell(i);
@@ -1408,14 +1431,13 @@ public class Sys implements Serializable {
             XSSFRow row_maNv = work_sheet.createRow(5);
             XSSFCell cell_maNv;
             cell_maNv = row_maNv.createCell(0);
-            cell_maNv.setCellValue("Nhân viên xuất nhiều phiếu nhất: ");
+            cell_maNv.setCellValue("Nhân viên hủy nhiều phiếu nhất: ");
             int size4 = maNv.size();
             for (int i = 1; i <= size4; i++) {
                 cell_maNv = row_maNv.createCell(i);
                 cell_maNv.setCellValue((maNv.get(i - 1)));
             }
             // nha cung cap nhap nhieu nhat
-            
 
             wb.write(file);
             wb.close();
@@ -1424,7 +1446,7 @@ public class Sys implements Serializable {
             flag = 1;
             e.printStackTrace();
         }
-        if(flag == 1){
+        if (flag == 1) {
             return false;
         }
         return true;
@@ -1461,6 +1483,7 @@ public class Sys implements Serializable {
         file.close();
         return nhanvien;
     }
+
     // ten nhan vien
     public static ArrayList<String> readExcel_nameNVTKHoaDon(String pathname) throws IOException {
         FileInputStream file = new FileInputStream(pathname);
@@ -1491,6 +1514,7 @@ public class Sys implements Serializable {
         file.close();
         return nhanvien;
     }
+
     // so lan giao dich
     public static ArrayList<Double> readExcel_SoLanGiaDich(String pathname) throws IOException {
         FileInputStream file = new FileInputStream(pathname);
@@ -1552,6 +1576,7 @@ public class Sys implements Serializable {
         file.close();
         return hoadon;
     }
+
     // tong tien
     public static ArrayList<Double> readExcel_TongTienTKHoaDon(String pathname) throws IOException {
         FileInputStream file = new FileInputStream(pathname);
@@ -1584,7 +1609,8 @@ public class Sys implements Serializable {
     }
 
     // ghi file hoa don
-    public static boolean writeExcel_TKHoaDon(String pathname,ArrayList <String> NgayThongKe, ArrayList<String> maNV, ArrayList<String> nameNV,
+    public static boolean writeExcel_TKHoaDon(String pathname, ArrayList<String> NgayThongKe, ArrayList<String> maNV,
+            ArrayList<String> nameNV,
             ArrayList<Double> solangiaodich, ArrayList<String> soHD, ArrayList<Double> tongtien) throws IOException {
 
         FileOutputStream file = new FileOutputStream(pathname);
@@ -1599,7 +1625,7 @@ public class Sys implements Serializable {
             cell_day.setCellValue("Ngày thống kê: ");
             for (int i = 1; i < 3; i++) {
                 cell_day = row_day.createCell(i);
-                cell_day.setCellValue(NgayThongKe.get(i-1));
+                cell_day.setCellValue(NgayThongKe.get(i - 1));
             }
             // ghi ma nv
             XSSFRow row_maNV = work_sheet.createRow(1);
@@ -1652,7 +1678,6 @@ public class Sys implements Serializable {
                 cell_tongtien.setCellValue((tongtien.get(i - 1)));
             }
             // nha cung cap nhap nhieu nhat
-            
 
             wb.write(file);
             wb.close();
@@ -1661,14 +1686,11 @@ public class Sys implements Serializable {
             flag = 1;
             e.printStackTrace();
         }
-        if(flag == 1){
+        if (flag == 1) {
             return false;
         }
         return true;
     }
-
-
-
 
     public static void main(String[] args) throws IOException {
         // System.out.println( Sys.Question_dialog("Nhap so"));
@@ -1685,50 +1707,53 @@ public class Sys implements Serializable {
         // Sys.readExcel("hello");
 
         // ArrayList<String> day = Sys
-        //         .readExcel_ngayTKPhieuNhap("D:\\A\\JAVA\\DO_AN_JAVA_SWING\\Excel_PhieuNhap\\hi.xlsx");
+        // .readExcel_ngayTKPhieuNhap("D:\\A\\JAVA\\DO_AN_JAVA_SWING\\Excel_PhieuNhap\\hi.xlsx");
         // for (String iterable_element : day) {
-        //     System.out.println(iterable_element);
+        // System.out.println(iterable_element);
         // }
 
         // ArrayList<String> nameSp = Sys
-        //         .readExcel_tenSPTKPhieuNhap("D:\\A\\JAVA\\DO_AN_JAVA_SWING\\Excel_PhieuNhap\\hi.xlsx");
+        // .readExcel_tenSPTKPhieuNhap("D:\\A\\JAVA\\DO_AN_JAVA_SWING\\Excel_PhieuNhap\\hi.xlsx");
 
         // ArrayList<String> maSP = Sys
-        //         .readExcel_maSPTKPhieuNhap("D:\\A\\JAVA\\DO_AN_JAVA_SWING\\Excel_PhieuNhap\\hi.xlsx");
+        // .readExcel_maSPTKPhieuNhap("D:\\A\\JAVA\\DO_AN_JAVA_SWING\\Excel_PhieuNhap\\hi.xlsx");
         // for (String iterable_element : maSP) {
-        //     System.out.println(iterable_element);
+        // System.out.println(iterable_element);
         // }
 
         // ArrayList<Double> phantram = Sys
-        //         .readExcel_PhanTramSPPhieuNhap("D:\\A\\JAVA\\DO_AN_JAVA_SWING\\Excel_PhieuNhap\\hi.xlsx");
+        // .readExcel_PhanTramSPPhieuNhap("D:\\A\\JAVA\\DO_AN_JAVA_SWING\\Excel_PhieuNhap\\hi.xlsx");
 
         // ArrayList<String> maPN = Sys
-        //         .readExcel_PhieuNhapCoTongTienLonNhat("D:\\A\\JAVA\\DO_AN_JAVA_SWING\\Excel_PhieuNhap\\hi.xlsx");
+        // .readExcel_PhieuNhapCoTongTienLonNhat("D:\\A\\JAVA\\DO_AN_JAVA_SWING\\Excel_PhieuNhap\\hi.xlsx");
 
         // ArrayList<String> maNv = Sys
-        //         .readExcel_NhanVienNhapNhieuPhieuNhat("D:\\A\\JAVA\\DO_AN_JAVA_SWING\\Excel_PhieuNhap\\hi.xlsx");
+        // .readExcel_NhanVienNhapNhieuPhieuNhat("D:\\A\\JAVA\\DO_AN_JAVA_SWING\\Excel_PhieuNhap\\hi.xlsx");
 
         // ArrayList<String> maNCC = Sys
-        //         .readExcel_NhaCungCapNhapNhieuNhat("D:\\A\\JAVA\\DO_AN_JAVA_SWING\\Excel_PhieuNhap\\hi.xlsx");
+        // .readExcel_NhaCungCapNhapNhieuNhat("D:\\A\\JAVA\\DO_AN_JAVA_SWING\\Excel_PhieuNhap\\hi.xlsx");
 
         // // Sys.writeExcel("D:\\A\\JAVA\\DO_AN_JAVA_SWING\\Excel_PhieuNhap\\hi.xlsx");
-        // Sys.writeExcel_TKPhieuXuat("D:\\A\\JAVA\\DO_AN_JAVA_SWING\\Excel_PhieuNhap\\oo.xlsx", day, maSP, nameSp,
-        //         phantram, maPN, maNv);
+        // Sys.writeExcel_TKPhieuXuat("D:\\A\\JAVA\\DO_AN_JAVA_SWING\\Excel_PhieuNhap\\oo.xlsx",
+        // day, maSP, nameSp,
+        // phantram, maPN, maNv);
 
-        
-        // ArrayList<String> maNV = Sys.readExcel_maNVTKHoaDon("D:\\A\\JAVA\\DO_AN_JAVA_SWING\\Excel_PhieuNhap\\HoaDon.xlsx");
+        // ArrayList<String> maNV =
+        // Sys.readExcel_maNVTKHoaDon("D:\\A\\JAVA\\DO_AN_JAVA_SWING\\Excel_PhieuNhap\\HoaDon.xlsx");
         // for (String iterable_element : maNV) {
-        //     System.out.println(iterable_element);
+        // System.out.println(iterable_element);
         // }
-        // ArrayList<String> nameNV = Sys.readExcel_nameNVTKHoaDon("D:\\A\\JAVA\\DO_AN_JAVA_SWING\\Excel_PhieuNhap\\HoaDon.xlsx");
-        // ArrayList<Double> solan = Sys.readExcel_SoLanGiaDich("D:\\A\\JAVA\\DO_AN_JAVA_SWING\\Excel_PhieuNhap\\HoaDon.xlsx");
-        // ArrayList<String> hoadon = Sys.readExcel_nameHoaDonTKHoaDon("D:\\A\\JAVA\\DO_AN_JAVA_SWING\\Excel_PhieuNhap\\HoaDon.xlsx");
-        // ArrayList<Double> tongtien = Sys.readExcel_TongTienTKHoaDon("D:\\A\\JAVA\\DO_AN_JAVA_SWING\\Excel_PhieuNhap\\HoaDon.xlsx");
+        // ArrayList<String> nameNV =
+        // Sys.readExcel_nameNVTKHoaDon("D:\\A\\JAVA\\DO_AN_JAVA_SWING\\Excel_PhieuNhap\\HoaDon.xlsx");
+        // ArrayList<Double> solan =
+        // Sys.readExcel_SoLanGiaDich("D:\\A\\JAVA\\DO_AN_JAVA_SWING\\Excel_PhieuNhap\\HoaDon.xlsx");
+        // ArrayList<String> hoadon =
+        // Sys.readExcel_nameHoaDonTKHoaDon("D:\\A\\JAVA\\DO_AN_JAVA_SWING\\Excel_PhieuNhap\\HoaDon.xlsx");
+        // ArrayList<Double> tongtien =
+        // Sys.readExcel_TongTienTKHoaDon("D:\\A\\JAVA\\DO_AN_JAVA_SWING\\Excel_PhieuNhap\\HoaDon.xlsx");
 
-       
-
-        // Sys.writeExcel_TKHoaDon("D:\\A\\JAVA\\DO_AN_JAVA_SWING\\Excel_PhieuNhap\\HoaDon2.xlsx", day, maNV, nameNV, solan, hoadon, tongtien);
-
+        // Sys.writeExcel_TKHoaDon("D:\\A\\JAVA\\DO_AN_JAVA_SWING\\Excel_PhieuNhap\\HoaDon2.xlsx",
+        // day, maNV, nameNV, solan, hoadon, tongtien);
 
         // ArrayList<String> phieuNhap = Sys.readExcel_NhaCungCapNhapNhieuNhat("hello");
         // for (String iterable_element : phieuNhap) {
@@ -1755,6 +1780,6 @@ public class Sys implements Serializable {
         B.add("a");
 
         System.out.println(A.equals(B));
-        
+
     }
 }

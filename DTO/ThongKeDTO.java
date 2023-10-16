@@ -9,15 +9,17 @@ public class ThongKeDTO {
        private DanhSachHDBUS danhSachHD;
        private StaffsBUS staffs;
        private DanhSachNhaCCBUS danhSachNhaCC;
+       private dsPhieuHuyBUS dsPhieuHuyBUS;
 
        public ThongKeDTO(ListProductsBUS listProducts, dsPhieuNhapBUS dsPhieuNhap, dsPhieuXuatBUS dsPhieuXuat,
-       DanhSachHDBUS danhSachHD, StaffsBUS staffs, DanhSachNhaCCBUS danhSachNhaCC) {
+       DanhSachHDBUS danhSachHD, StaffsBUS staffs, DanhSachNhaCCBUS danhSachNhaCC, dsPhieuHuyBUS dsPhieuHuyBUS) {
               this.listProducts = listProducts;
               this.dsPhieuNhap = dsPhieuNhap;
               this.dsPhieuXuat = dsPhieuXuat;
               this.danhSachHD = danhSachHD;
               this.staffs = staffs;
               this.danhSachNhaCC = danhSachNhaCC;
+              this.dsPhieuHuyBUS = dsPhieuHuyBUS;
        }
 
        // phieu nhap
@@ -324,6 +326,104 @@ public class ThongKeDTO {
               return cachoadon;
        }
 
+       // phieu huy
+       public ArrayList <Double> ThongKe_huyProduct(String dayBefore, String dayAfter) {
+              // doc ma sp
+              ArrayList<ProductsDTO> list_products = this.listProducts.getArr();
+              ArrayList<String> maSp = new ArrayList<>();
+              for (ProductsDTO products : list_products) {
+                     maSp.add(products.getMaSP());
+              }
+              // lay so luong huy tung san pham
+              int[] soluongHuy = new int[maSp.size()];
+              ArrayList<PhieuHuyDTO> list_PhieuHuy = this.dsPhieuHuyBUS.getDsPhieuhuy();
+              for (int index = 0; index < maSp.size(); index++) {
+                     String maSP = maSp.get(index);
+                     for (PhieuHuyDTO phieuHuyDTO : list_PhieuHuy) {
+                            if (Sys.kiemTraKhoangThoiGian(dayBefore, phieuHuyDTO.getDate(), dayAfter) && phieuHuyDTO.getTinhTrang().equals("Đã xác nhận")) {
+                                   ChiTietPhieuDTO[] chiTietPhieus = phieuHuyDTO.getDsChitietphieu2().getChiTietPhieu2s();
+                                   int sl_CT = phieuHuyDTO.getDsChitietphieu2().getIndex();
+                                   for (int i = 0; i < sl_CT; i++) {
+                                          if (chiTietPhieus[i].getMaSP().equals(maSP)) {
+                                                 soluongHuy[index] += chiTietPhieus[i].getSoLuong();
+                                          }
+                                   }
+                            }
+
+                     }
+              }
+              // tinh ty le phan tram tung san pham
+              // double[] phanTram = new double[maSp.size()];
+              ArrayList <Double> phanTram = new ArrayList<>();
+              int tong = 0;
+              for (int index = 0; index < maSp.size(); index++) {
+                     tong += soluongHuy[index];
+              }
+              if (tong > 0) {
+                     double ty_le = 100 / tong;
+                     for (int i = 0; i < maSp.size(); i++) {
+                            phanTram.add(soluongHuy[i] * ty_le);
+                     }
+                     return phanTram;
+              }
+              return null;
+       }
+       public ArrayList< String > ThongKe_NhanVienHuytMax(String dayBefore, String dayAfter){
+              float soLanMax = 0;
+              ArrayList<StaffDTO> list_NhanVien = this.staffs.getStaffs();
+              int [] soLanThucHien = new int[ list_NhanVien.size()];
+              ArrayList<PhieuHuyDTO> list_PhieuHuy = this.dsPhieuHuyBUS.getDsPhieuhuy();
+              
+              for (int i = 0; i < list_NhanVien.size(); i++) {
+                     String maNv = list_NhanVien.get(i).getId();
+                     for (PhieuHuyDTO phieuHuy : list_PhieuHuy) {
+                            if (Sys.kiemTraKhoangThoiGian(dayBefore, phieuHuy.getDate(), dayAfter) && phieuHuy.getTinhTrang().equals("Đã xác nhận")) {
+                                   if(phieuHuy.getIDNhanVien().equals(maNv)){
+                                          soLanThucHien[i]++;
+                                   }
+                            }
+                            
+                     }
+              }
+              ArrayList< String>  manv = new ArrayList<>();
+              for (int index = 0; index < list_NhanVien.size(); index++) {
+                     if(soLanThucHien[index] > soLanMax){
+                            soLanMax = soLanThucHien[index];
+                     }
+              }
+              for (int i = 0; i < list_NhanVien.size(); i++) {
+                     String maNv = list_NhanVien.get(i).getId();
+                     if(soLanThucHien[i] == soLanMax){
+                            // manv = manv + maNv+" ";
+                            manv.add(maNv);
+                     }
+              }
+              return manv;
+       }
+       public ArrayList< String> ThongKe_PhieuHuyTongTienMax(String dayBefore, String dayAfter){
+              float tongtienMax = 0;
+              ArrayList <String> maPhieu = new ArrayList<>() ;
+              ArrayList<PhieuHuyDTO> list_PhieuHuy = this.dsPhieuHuyBUS.getDsPhieuhuy();
+              for (PhieuHuyDTO phieuHuy : list_PhieuHuy) {
+                     if (Sys.kiemTraKhoangThoiGian(dayBefore, phieuHuy.getDate(), dayAfter) && phieuHuy.getTinhTrang().equals("Đã xác nhận")) {
+                            if(tongtienMax <= phieuHuy.getSumMoney() ){
+                                   tongtienMax = phieuHuy.getSumMoney();      
+                            }
+                     }
+                     
+              }
+              for (PhieuHuyDTO phieuHuy : list_PhieuHuy) {
+                     if (Sys.kiemTraKhoangThoiGian(dayBefore, phieuHuy.getDate(), dayAfter) && phieuHuy.getTinhTrang().equals("Đã xác nhận")) {
+                            if(tongtienMax == phieuHuy.getSumMoney() ){
+                                   // maPhieu = maPhieu + phieuHuy.getIDPhieu()+" ";
+                                   maPhieu.add(phieuHuy.getIDPhieu());
+                            }
+                     }
+                     
+              }
+              return maPhieu;
+       }
+
        public ListProductsBUS getListProducts() {
               return listProducts;
        }
@@ -346,6 +446,9 @@ public class ThongKeDTO {
 
        public DanhSachNhaCCBUS getDanhSachNhaCC() {
               return danhSachNhaCC;
+       }
+       public dsPhieuHuyBUS getDsPhieuHuyBUS() {
+              return dsPhieuHuyBUS;
        }
 
        

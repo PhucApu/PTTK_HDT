@@ -124,7 +124,7 @@ public class dsPhieuXuatBUS implements DanhSachBUS, Serializable {
               return phieu;
        }
 
-       public void add(HoaDonDTO hoadon, ListProductsBUS kho) {
+       public void add(StaffDTO staffDTO,HoaDonDTO hoadon, ListProductsBUS kho) {
               dsChiTietPhieuBUS dsChitietphieu2 = new dsChiTietPhieuBUS();
               DanhSachCTHDBUS dSachCTHD = hoadon.getDsCTHD();
               for (ChiTietHDDTO chiTietHD : dSachCTHD.getCthd()) {
@@ -146,6 +146,8 @@ public class dsPhieuXuatBUS implements DanhSachBUS, Serializable {
               dsChitietphieu2.Sum_money(), hoadon.getManv(), hoadon.getMahd());
               dsPhieuxuat.add(moi);
               themPhieuXuat_database(moi);
+              XacnhanXuatko_2(staffDTO, kho, maPhieu);
+              
        }
 
        public boolean XacnhanXuatko_2(StaffDTO nv, ListProductsBUS kho, String id){
