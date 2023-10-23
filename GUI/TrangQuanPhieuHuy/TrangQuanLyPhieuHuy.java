@@ -208,6 +208,7 @@ public class TrangQuanLyPhieuHuy extends JPanel {
 	}
 	public ArrayList<PhieuHuyDTO> Load_DSPhieuHuy() {
 		ArrayList<PhieuHuyDTO> data = getDataFromDAOBUS.getList_PhieuHuy_fromDATA();
+		dsPhieuHuyBUS.setDsPhieunhap(data);
 		return data;
 	}
 	public ListProductsBUS getListProducts() {
@@ -236,6 +237,7 @@ public class TrangQuanLyPhieuHuy extends JPanel {
 	}
 	public void Load_DSPhieuHuy_from_data_after_change() {
 		ArrayList<PhieuHuyDTO> data = getDataFromDAOBUS.getList_PhieuHuy_fromDATA();
+		dsPhieuHuyBUS.setDsPhieunhap(data);
 		for (PhieuHuyDTO phieuXuat : data) {
 			add_data_Table(phieuXuat);
 		}
@@ -249,7 +251,7 @@ public class TrangQuanLyPhieuHuy extends JPanel {
 	public PhieuHuyDTO Click_table() {
 		try {
 			int click = this.table.getSelectedRow();
-			PhieuHuyDTO phieuXuat = this.dsPhieuHuyBUS.getDsPhieuhuy().get(click);
+			PhieuHuyDTO phieuXuat = getDataFromDAOBUS.getList_PhieuHuy_fromDATA().get(click);
 			return phieuXuat;
 		} catch (Exception e) {
 			// JOptionPane.showConfirmDialog(null, "HÃY CLICK CHỌN MỘT PHIẾU TRONG BẢNG", "Thông báo",

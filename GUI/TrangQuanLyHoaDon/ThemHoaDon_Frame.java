@@ -263,6 +263,7 @@ public class ThemHoaDon_Frame extends JFrame {
 		btn_ChonVi.setFont(new Font("Tahoma", Font.BOLD, 15));
 		btn_ChonVi.setBorderPainted(false);
 		btn_ChonVi.setBounds(477, 95, 121, 35);
+              
 		CTHD_panel.add(btn_ChonVi);
 
               ThongTinSP_panel = new JPanel();
@@ -380,6 +381,9 @@ public class ThemHoaDon_Frame extends JFrame {
 		controller_refreshSP_ThemHDFrame controller_refreshSP_ThemHDFrame = new controller_refreshSP_ThemHDFrame(this);
 		RefreshSPIcon_label.addMouseListener(controller_refreshSP_ThemHDFrame);
 
+              controller_btnChonVi controller_btnChonVi = new controller_btnChonVi(this);
+              btn_ChonVi.addMouseListener(controller_btnChonVi);
+
 
 
 		setVisible(true);
@@ -403,6 +407,7 @@ public class ThemHoaDon_Frame extends JFrame {
        public JLabel getGanNgay_label() {
               return GanNgay_label;
        }
+       
 
        // danh muc san pham
        public void TimKiemSP_TuKhoa() {
@@ -656,6 +661,11 @@ public class ThemHoaDon_Frame extends JFrame {
               this.trangQuanLyHoaDon_view.setCheck_open_Jrame(0);
               this.setVisible(false);
               this.dispose();
+       }
+       public void btnChonVi(){
+              ChonVi_Frame chonVi_Frame = new ChonVi_Frame(this);
+              this.setVisible(false);
+              // this.dispose();
        }
 
        public void btnLamMoiHD() {
