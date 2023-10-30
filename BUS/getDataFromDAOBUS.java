@@ -8,7 +8,24 @@ import DTO.*;
 
 public class getDataFromDAOBUS implements Serializable {
 
-    // nha phieu huy
+    // phieu KIEM
+    public static ArrayList<PhieuKiemDTO> getList_PhieuKiem_fromDATA() {
+
+        ArrayList<PhieuKiemDTO> list = null;
+        try {
+            PhieuKiemDAO data = new PhieuKiemDAO();
+            list = data.getList();
+        } catch (Exception e) {
+            Sys.printError("LOAD DATA PHIEU KIEM THAT BAI !!!");
+            // e.printStackTrace();
+        }
+        Sys.printMessage("LOAD DATA PHIEU KIEM THANH CONG !!");
+        return list;
+    }
+
+
+
+    // phieu huy
     public static ArrayList<PhieuHuyDTO> getList_PhieuHuy_fromDATA() {
 
         ArrayList<PhieuHuyDTO> list = null;

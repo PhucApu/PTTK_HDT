@@ -12,12 +12,13 @@ public class Main {
               dsPhieuXuatBUS dsPhieuXuat = store.load_PhieuXuat_2();
               DanhSachNhaCCBUS dSachNhaCC = store.load_DanhSachNhaCC_2();
               dsPhieuHuyBUS dsPhieuHuyBUS = store.load_DanhSachPhieuHuy_2();
+              dsPhieuKiemBUS dsPhieuKiemBUS = store.load_DanhSachPhieuKiem_2();
               StaffsBUS staffs = store.load_Staffs_2();
               ThongKeDTO thongKe = new ThongKeDTO(listProducts, dsPhieuNhap, dsPhieuXuat, danhSachHD, staffs,
                             dSachNhaCC,dsPhieuHuyBUS);
 
               DangNhap_view dangNhap_view = new DangNhap_view(staffs, dSachNhaCC, dsPhieuNhap, listProducts,
-                            dsPhieuXuat, danhSachHD, thongKe, dsPhieuHuyBUS);
+                            dsPhieuXuat, danhSachHD, thongKe, dsPhieuHuyBUS,dsPhieuKiemBUS);
        }
        
 }

@@ -48,7 +48,7 @@ public class TrangKhongChoVao_view extends JPanel {
 		add(ThongBao_label_1);
 		
 		JLabel IconSad_label = new JLabel("",JLabel.CENTER);
-		IconSad_label.setIcon(new ImageIcon("D:\\DO_AN_JAVA_TONG_KET\\DoAnOOP_Nhom10\\image_icon\\sad.png"));
+		IconSad_label.setIcon(new ImageIcon("image_icon\\sad.png"));
 		IconSad_label.setBounds(279, 323, 190, 143);
 		add(IconSad_label);
 

@@ -324,17 +324,17 @@ public class TrangQuanLyPhieuNhap_view extends JPanel {
 			}
 		}
 	}
-	public void nhapvaokho(String maPhieu){
-		if(this.dsPhieuNhap.Capnhatvaokho_2(maPhieu, listProducts)){
+	public void guiNCC(String maPhieu){
+		if(this.dsPhieuNhap.send_NXS(maPhieu)){
 			// JOptionPane.showConfirmDialog(null, "NHẬP VÀO KHO THÀNH CÔNG", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 			Sys.Sound_Success();
-			Sys.Success_dialog("NHẬP VÀO KHO THÀNH CÔNG");
+			Sys.Success_dialog("GỬI NHÀ CUNG CẤP THÀNH CÔNG CHỜ XÁC NHẬN");
 			
 		}
 		else{
 			// JOptionPane.showConfirmDialog(null, "NHẬP VÀO KHO THẤT BẠI", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
 			Sys.Sound_Error();
-			Sys.Error_dialog("NHẬP VÀO KHO THẤT BẠI");
+			Sys.Error_dialog("GỬI NHÀ CUNG CẤP THẤT BẠI");
 			
 		}
 	}
@@ -370,7 +370,7 @@ public class TrangQuanLyPhieuNhap_view extends JPanel {
 	public void Nhapvaokho_Frame(){
 		try {
 			String maPhieu = JOptionPane.showInputDialog(null, "Nhập mã cần nhập", "Thông báo", JOptionPane.YES_OPTION);
-			nhapvaokho(maPhieu);
+			guiNCC(maPhieu);
 
 		} catch (Exception e) {
 			// JOptionPane.showConfirmDialog(null, "KHÔNG THỂ NHẬP MÃ PHIẾU", "Thông báo",

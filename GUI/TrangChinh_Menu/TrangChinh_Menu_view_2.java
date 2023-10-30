@@ -20,6 +20,7 @@ import TrangQuanLyHoaDon.TrangQuanLyHoaDon_view;
 import TrangQuanLyKho.TrangQuanLyKho_view;
 import TrangQuanLyNhaCC.TrangQuanLyNhaCC_view;
 import TrangQuanLyNhanVien.TrangQuanLyNhanVien_view;
+import TrangQuanLyPhieuKiem.TrangQuanLyPhieuKiem_view;
 import TrangQuanLyPhieuNhap.TrangQuanLyPhieuNhap_view;
 import TrangQuanLyPhieuXuat.TrangQuanLyPhieuXuat_view;
 import TrangQuanPhieuHuy.TrangQuanLyPhieuHuy;
@@ -47,6 +48,8 @@ public class TrangChinh_Menu_view_2 extends JFrame {
        private JLabel NhanCC_label;
        private JPanel ThongKe_panel;
        private JLabel ThongKe_label;
+       private JPanel PhieuKiem_panel;
+       private JLabel PhieuKiem_label;
        private JPanel BackGround_panel;
        /**
         * THÊM CÁC TRANG
@@ -60,6 +63,7 @@ public class TrangChinh_Menu_view_2 extends JFrame {
        private TrangQuanLyHoaDon_view trangQuanLyHoaDon_view;
        private TrangThongKe_view trangThongKe_view;
        private TrangQuanLyPhieuHuy trangQuanLyPhieuHuy_view;
+       private TrangQuanLyPhieuKiem_view trangQuanLyPhieuKiem_view;
        private TrangKhongChoVao_view trangKhongChoVao_view;
        private int numberpage;
        private int Chucvu = 0; // 0: manager ; 1 : fulltime ; 2 : parttime
@@ -75,6 +79,7 @@ public class TrangChinh_Menu_view_2 extends JFrame {
        private DanhSachHDBUS danhSachHD;
        private ThongKeDTO thongKe;
        private dsPhieuHuyBUS dsPhieuHuyBUS;
+       private dsPhieuKiemBUS dsPhieuKiemBUS;
 
        private Color mau_nen_menu = new Color(223, 120, 87);
        private Color colorOver = new Color(249, 81, 19);
@@ -84,7 +89,7 @@ public class TrangChinh_Menu_view_2 extends JFrame {
                      dsPhieuNhapBUS dsPhieuNhap,
                      ListProductsBUS listProducts, StaffsBUS staffs, dsPhieuXuatBUS dsPhieuXuat,
                      DanhSachHDBUS danhSachHD,
-                     ThongKeDTO thongKe,dsPhieuHuyBUS dsPhieuHuyBUS, GiaoDienChinh_view giaoDienChinh_view) {
+                     ThongKeDTO thongKe,dsPhieuHuyBUS dsPhieuHuyBUS,dsPhieuKiemBUS dsPhieuKiemBUS, GiaoDienChinh_view giaoDienChinh_view) {
               this.giaoDienChinh_view = giaoDienChinh_view;
               this.danhSachNhaCC = danhSachNhaCC;
               this.dsPhieuNhap = dsPhieuNhap;
@@ -94,9 +99,10 @@ public class TrangChinh_Menu_view_2 extends JFrame {
               this.danhSachHD = danhSachHD;
               this.thongKe = thongKe;
               this.dsPhieuHuyBUS = dsPhieuHuyBUS;
+              this.dsPhieuKiemBUS = dsPhieuKiemBUS;
               this.numberpage = number_page;
               setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-              setBounds(100, 100, 1000, 615);
+              setBounds(100, 100, 1000, 665);
               setResizable(false);
               setIconImage(new ImageIcon(
                             "image_icon\\z4200822300696_1883a507d71843fb2dadab7cc0b1c8d8-removebg-preview (1).png")
@@ -112,7 +118,7 @@ public class TrangChinh_Menu_view_2 extends JFrame {
               Font chu = new Font("Tahoma", Font.BOLD, 15);
 
               panel = new JPanel();
-              panel.setBounds(0, 0, 0, 600);
+              panel.setBounds(0, 0,0, 680);
               contentPane.add(panel);
               panel.setLayout(null);
 
@@ -185,10 +191,25 @@ public class TrangChinh_Menu_view_2 extends JFrame {
               PhieuXuat_label.setBounds(0, 0, 250, 50);
               PhieuXuat_panel.add(PhieuXuat_label);
 
+              PhieuKiem_panel = new JPanel();
+		PhieuKiem_panel.setLayout(null);
+		PhieuKiem_panel.setBackground(new Color(223, 120, 87));
+		PhieuKiem_panel.setBounds(0, 368, 250, 50);
+		PhieuKiem_panel.setBorder(BorderFactory.createLineBorder(mau_boder));
+		panel.add(PhieuKiem_panel);
+
+              PhieuKiem_label = new JLabel("PHIẾU KIỂM", JLabel.CENTER);
+		PhieuKiem_label.setIcon(new ImageIcon("image_icon\\pros-and-cons.png"));
+		PhieuKiem_label.setForeground(Color.WHITE);
+		PhieuKiem_label.setFont(new Font("Tahoma", Font.BOLD, 15));
+		PhieuKiem_label.setBounds(0, 0, 250, 50);
+		PhieuKiem_label.setBorder(BorderFactory.createLineBorder(mau_boder));
+		PhieuKiem_panel.add(PhieuKiem_label);
+
               QLKH_panel = new JPanel();
               QLKH_panel.setLayout(null);
               QLKH_panel.setBackground(new Color(223, 120, 87));
-              QLKH_panel.setBounds(0, 368, 250, 50);
+              QLKH_panel.setBounds(0, 418, 250, 50);
               QLKH_panel.setBorder(BorderFactory.createLineBorder(mau_boder));
               panel.add(QLKH_panel);
 
@@ -203,7 +224,7 @@ public class TrangChinh_Menu_view_2 extends JFrame {
               NhanVien_panel = new JPanel();
               NhanVien_panel.setLayout(null);
               NhanVien_panel.setBackground(new Color(223, 120, 87));
-              NhanVien_panel.setBounds(0, 418, 250, 50);
+              NhanVien_panel.setBounds(0, 468, 250, 50);
               NhanVien_panel.setBorder(BorderFactory.createLineBorder(mau_boder));
               panel.add(NhanVien_panel);
 
@@ -218,7 +239,7 @@ public class TrangChinh_Menu_view_2 extends JFrame {
               NhaCC_panel = new JPanel();
               NhaCC_panel.setLayout(null);
               NhaCC_panel.setBackground(new Color(223, 120, 87));
-              NhaCC_panel.setBounds(0, 468, 250, 50);
+              NhaCC_panel.setBounds(0, 518, 250, 50);
               NhaCC_panel.setBorder(BorderFactory.createLineBorder(mau_boder));
               panel.add(NhaCC_panel);
 
@@ -233,7 +254,7 @@ public class TrangChinh_Menu_view_2 extends JFrame {
               ThongKe_panel = new JPanel();
               ThongKe_panel.setLayout(null);
               ThongKe_panel.setBackground(new Color(223, 120, 87));
-              ThongKe_panel.setBounds(0, 518, 250, 50);
+              ThongKe_panel.setBounds(0, 568, 250, 50);
               ThongKe_panel.setBorder(BorderFactory.createLineBorder(mau_boder));
               panel.add(ThongKe_panel);
 
@@ -246,7 +267,7 @@ public class TrangChinh_Menu_view_2 extends JFrame {
               ThongKe_panel.add(ThongKe_label);
 
               BackGround_panel = new JPanel();
-              BackGround_panel.setBounds(0, 0, 1000, 605);
+              BackGround_panel.setBounds(0, 0, 1000, 700);
               BackGround_panel.setBackground(new Color(246, 225, 195));
               BackGround_panel.setOpaque(true);
               contentPane.add(BackGround_panel);
@@ -298,6 +319,11 @@ public class TrangChinh_Menu_view_2 extends JFrame {
               trangKhongChoVao_view.setBounds(255, 0, 732, 600);
               trangKhongChoVao_view.setVisible(false);
               BackGround_panel.add(trangKhongChoVao_view);
+
+              trangQuanLyPhieuKiem_view = new TrangQuanLyPhieuKiem_view(staff, dsPhieuKiemBUS, listProducts);
+              trangQuanLyPhieuKiem_view.setBounds(255, 0, 732, 600);
+              trangQuanLyPhieuKiem_view.setVisible(false);
+              BackGround_panel.add(trangQuanLyPhieuKiem_view);
 
               // controller
               setChucvu(staff);
@@ -387,6 +413,7 @@ public class TrangChinh_Menu_view_2 extends JFrame {
                             TrangQuanLyPhieuHuy_close();
                             TrangThongKe_close();
                             TrangKhongChoVao_close();
+                            TrangQuanLyPhieuKiem_close();
                      }
               });
 
@@ -432,6 +459,7 @@ public class TrangChinh_Menu_view_2 extends JFrame {
                                    TrangQuanLyHoaDon_close();
                                    TrangThongKe_close();
                                    TrangKhongChoVao_close();
+                                   TrangQuanLyPhieuKiem_close();
                             }
 
                             else if (getChucvu() == 1) {
@@ -445,6 +473,7 @@ public class TrangChinh_Menu_view_2 extends JFrame {
                                    TrangQuanLyHoaDon_close();
                                    TrangThongKe_close();
                                    TrangKhongChoVao_close();
+                                   TrangQuanLyPhieuKiem_close();
                             } else if (getChucvu() == 2) {
                                    TrangKhongChoVao_open();
                                    TrangNhaCC_close();
@@ -455,6 +484,7 @@ public class TrangChinh_Menu_view_2 extends JFrame {
                                    TrangQuanLyHoaDon_close();
                                    TrangThongKe_close();
                                    TrangPhieuNhap_close();
+                                   TrangQuanLyPhieuKiem_close();
 
                             }
                      }
@@ -502,6 +532,7 @@ public class TrangChinh_Menu_view_2 extends JFrame {
                                    TrangQuanLyHoaDon_close();
                                    TrangThongKe_close();
                                    TrangKhongChoVao_close();
+                                   TrangQuanLyPhieuKiem_close();
 
                             } else if (getChucvu() == 2) {
                                    TrangKhongChoVao_open();
@@ -513,6 +544,7 @@ public class TrangChinh_Menu_view_2 extends JFrame {
                                    TrangQuanLyKho_close();
                                    TrangQuanLyHoaDon_close();
                                    TrangThongKe_close();
+                                   TrangQuanLyPhieuKiem_close();
                             }
 
                      }
@@ -556,6 +588,7 @@ public class TrangChinh_Menu_view_2 extends JFrame {
                                    TrangQuanLyHoaDon_close();
                                    TrangThongKe_close();
                                    TrangKhongChoVao_close();
+                                   TrangQuanLyPhieuKiem_close();
                             } else if (getChucvu() == 1) {
                                    TrangKhongChoVao_open();
                                    TrangNhaCC_close();
@@ -566,6 +599,7 @@ public class TrangChinh_Menu_view_2 extends JFrame {
                                    TrangQuanLyPhieuHuy_close();
                                    TrangQuanLyHoaDon_close();
                                    TrangThongKe_close();
+                                   TrangQuanLyPhieuKiem_close();
                             } else if (getChucvu() == 2) {
                                    TrangKhongChoVao_open();
                                    TrangNhaCC_close();
@@ -576,6 +610,7 @@ public class TrangChinh_Menu_view_2 extends JFrame {
                                    TrangQuanLyPhieuHuy_close();
                                    TrangQuanLyHoaDon_close();
                                    TrangThongKe_close();
+                                   TrangQuanLyPhieuKiem_close();
                             }
 
                      }
@@ -620,6 +655,7 @@ public class TrangChinh_Menu_view_2 extends JFrame {
                                    TrangQuanLyHoaDon_close();
                                    TrangThongKe_close();
                                    TrangKhongChoVao_close();
+                                   TrangQuanLyPhieuKiem_close();
                             } else if (getChucvu() == 1
                                           || getChucvu() == 2) {
                                    TrangKhongChoVao_open();
@@ -631,6 +667,7 @@ public class TrangChinh_Menu_view_2 extends JFrame {
                                    TrangQuanLyPhieuHuy_close();
                                    TrangQuanLyHoaDon_close();
                                    TrangThongKe_close();
+                                   TrangQuanLyPhieuKiem_close();
                             }
 
                      }
@@ -676,6 +713,7 @@ public class TrangChinh_Menu_view_2 extends JFrame {
                                    TrangQuanLyPhieuHuy_close();
                                    TrangQuanLyHoaDon_close();
                                    TrangKhongChoVao_close();
+                                   TrangQuanLyPhieuKiem_close();
                             } else if (getChucvu() == 1
                                           && getChucvu() == 2) {
                                    TrangKhongChoVao_open();
@@ -687,6 +725,7 @@ public class TrangChinh_Menu_view_2 extends JFrame {
                                    // TrangPhieuXuat_close();
                                    TrangQuanLyPhieuHuy_close();
                                    TrangQuanLyHoaDon_close();
+                                   TrangQuanLyPhieuKiem_close();
                             }
 
                      }
@@ -732,6 +771,7 @@ public class TrangChinh_Menu_view_2 extends JFrame {
                                    TrangQuanLyHoaDon_close();
                                    TrangThongKe_close();
                                    TrangKhongChoVao_close();
+                                   TrangQuanLyPhieuKiem_close();
                             } else if (getChucvu() == 1 || getChucvu() == 2) {
                                    TrangKhongChoVao_open();
                                    TrangQuanLyNhanVien_close();
@@ -742,6 +782,78 @@ public class TrangChinh_Menu_view_2 extends JFrame {
                                    TrangQuanLyPhieuHuy_close();
                                    TrangQuanLyHoaDon_close();
                                    TrangThongKe_close();
+                                   TrangQuanLyPhieuKiem_close();
+                            }
+                     }
+              });
+
+              PhieuKiem_label.addMouseListener(new MouseAdapter() {
+                     @Override
+                     public void mouseEntered(MouseEvent e) {
+                            getPhieuKiem_label().setBackground(colorOver);
+                            getPhieuKiem_label().setOpaque(true);
+                     }
+
+                     @Override
+                     public void mouseExited(MouseEvent e) {
+                            getPhieuKiem_label().setBackground(mau_nen_menu);
+                            getPhieuKiem_label().setOpaque(true);
+                     }
+
+                     @Override
+                     public void mousePressed(MouseEvent e) {
+                            getPhieuKiem_label().setBackground(colorClick);
+                            getPhieuKiem_label().setOpaque(true);
+                     }
+
+                     @Override
+                     public void mouseReleased(MouseEvent e) {
+                            getPhieuKiem_label().setBackground(mau_nen_menu);
+                            getPhieuKiem_label().setOpaque(true);
+                     }
+
+                     @Override
+                     public void mouseClicked(MouseEvent e) {
+                            // di chuyen giua cac trang
+                            Sys.Sound_Click();
+                            if (getChucvu() == 0) {
+                                   TrangQuanLyPhieuKiem_open();
+                                   TrangPhieuNhap_close();
+                                   //
+                                   TrangNhaCC_close();
+                                   TrangQuanLyNhanVien_close();
+                                   TrangQuanLyKho_close();
+                                   // TrangPhieuXuat_close();
+                                   TrangQuanLyPhieuHuy_close();
+                                   TrangQuanLyHoaDon_close();
+                                   TrangThongKe_close();
+                                   TrangKhongChoVao_close();
+                            }
+
+                            else if (getChucvu() == 1) {
+                                   TrangQuanLyPhieuKiem_open();
+                                   TrangPhieuNhap_close();
+                                   //
+                                   TrangNhaCC_close();
+                                   TrangQuanLyNhanVien_close();
+                                   TrangQuanLyKho_close();
+                                   // TrangPhieuXuat_close();
+                                   TrangQuanLyPhieuHuy_close();
+                                   TrangQuanLyHoaDon_close();
+                                   TrangThongKe_close();
+                                   TrangKhongChoVao_close();
+                            } else if (getChucvu() == 2) {
+                                   TrangKhongChoVao_open();
+                                   TrangQuanLyPhieuKiem_close();
+                                   TrangNhaCC_close();
+                                   TrangQuanLyNhanVien_close();
+                                   TrangQuanLyKho_close();
+                                   // TrangPhieuXuat_close();
+                                   TrangQuanLyPhieuHuy_close();
+                                   TrangQuanLyHoaDon_close();
+                                   TrangThongKe_close();
+                                   TrangPhieuNhap_close();
+
                             }
                      }
               });
@@ -768,7 +880,7 @@ public class TrangChinh_Menu_view_2 extends JFrame {
                      @Override
                      public void run() {
                             int width_max = 251;
-                            int height_max = 600;
+                            int height_max = 680;
                             JPanel jPanel = getPanel();
                             int width = jPanel.getWidth();
                             if (width <= width_max) {
@@ -820,6 +932,9 @@ public class TrangChinh_Menu_view_2 extends JFrame {
        public JLabel getThongKe_label() {
               return ThongKe_label;
        }
+       public JLabel getPhieuKiem_label() {
+              return PhieuKiem_label;
+       }
 
        // chuyen giua cac trang
        public void Page(StaffDTO staff) {
@@ -866,6 +981,10 @@ public class TrangChinh_Menu_view_2 extends JFrame {
                                    TrangKhongChoVao_open();
                                    break;
                             }
+                            case 8:{
+                                   TrangKhongChoVao_open();
+                                   break;
+                            }
                      }
               } else if (staff instanceof ManagerDTO) {
                      switch (numberpage) {
@@ -902,6 +1021,10 @@ public class TrangChinh_Menu_view_2 extends JFrame {
                             case 7: {
                                    // thong ke
                                    TrangThongKe_open();
+                                   break;
+                            }
+                            case 8: {
+                                   TrangQuanLyPhieuKiem_open();
                                    break;
                             }
                      }
@@ -944,6 +1067,10 @@ public class TrangChinh_Menu_view_2 extends JFrame {
                                    // thong ke
                                    // TrangThongKe_open();
                                    TrangKhongChoVao_open();
+                                   break;
+                            }
+                            case 8: {
+                                   TrangQuanLyPhieuKiem_open();
                                    break;
                             }
                      }
@@ -1029,6 +1156,14 @@ public class TrangChinh_Menu_view_2 extends JFrame {
 
        public void TrangQuanLyPhieuHuy_close() {
               this.trangQuanLyPhieuHuy_view.setVisible(false);
+       }
+
+       public void TrangQuanLyPhieuKiem_open() {
+              this.trangQuanLyPhieuKiem_view.setVisible(true);
+       }
+
+       public void TrangQuanLyPhieuKiem_close() {
+              this.trangQuanLyPhieuKiem_view.setVisible(false);
        }
 
        public static void main(String[] args) {

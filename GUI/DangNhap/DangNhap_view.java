@@ -47,12 +47,13 @@ public class DangNhap_view extends JFrame {
 	private DanhSachHDBUS danhSachHD;
 	private ThongKeDTO thongKe;
 	private dsPhieuHuyBUS dsPhieuHuyBUS;
+	private dsPhieuKiemBUS dsPhieuKiemBUS;
 	private GioiThieu_panel gioiThieu_panel;
 	private JPanel panel;
 
 	public DangNhap_view(StaffsBUS staffs, DanhSachNhaCCBUS danhSachNhaCC, dsPhieuNhapBUS dsPhieuNhap,
 			ListProductsBUS listProducts, dsPhieuXuatBUS dsPhieuXuat, DanhSachHDBUS danhSachHD,
-			ThongKeDTO thongKe, dsPhieuHuyBUS dsPhieuHuyBUS) {
+			ThongKeDTO thongKe, dsPhieuHuyBUS dsPhieuHuyBUS, dsPhieuKiemBUS dsPhieuKiemBUS) {
 		this.staffs = staffs;
 		this.danhSachNhaCC = danhSachNhaCC;
 		this.dsPhieuNhap = dsPhieuNhap;
@@ -61,6 +62,7 @@ public class DangNhap_view extends JFrame {
 		this.danhSachHD = danhSachHD;
 		this.thongKe = thongKe;
 		this.dsPhieuHuyBUS = dsPhieuHuyBUS;
+		this.dsPhieuKiemBUS = dsPhieuKiemBUS;
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 809, 490);
 		setResizable(false);
@@ -233,7 +235,7 @@ public class DangNhap_view extends JFrame {
 		// kich hoat giao dien chinh
 		GiaoDienChinh_view giaoDienChinh_view = new GiaoDienChinh_view(staff,
 		danhSachNhaCC, dsPhieuNhap,
-		listProducts, staffs, dsPhieuXuat, danhSachHD, thongKe,dsPhieuHuyBUS, this);
+		listProducts, staffs, dsPhieuXuat, danhSachHD, thongKe,dsPhieuHuyBUS, dsPhieuKiemBUS, this);
 	}
 
 	public void DN() {

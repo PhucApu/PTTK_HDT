@@ -10,7 +10,7 @@ public class PhieuNhapDTO extends PhieuDTO implements Serializable {
                         String IDNhanVien, String MaNSX) {
               super(IDPhieu, date, dsChiTietPhieu, sumMoney, IDNhanVien);
               this.MaNXS = MaNSX;
-              this.Tinh_trang = "Chưa nhập";
+              this.Tinh_trang = "Chưa gửi";
        }
        public PhieuNhapDTO(String IDPhieu, String date, dsChiTietPhieuBUS dsChiTietPhieu, int sumMoney,
                         String IDNhanVien, String MaNSX,String TinhTrang) {

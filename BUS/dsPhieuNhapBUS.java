@@ -1,14 +1,17 @@
 package BUS;
 
 import java.io.Serializable;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Locale;
 import DTO.*;
 import DAO.*;
+
 public class dsPhieuNhapBUS implements DanhSachBUS, Serializable {
        private ArrayList<PhieuNhapDTO> dsPhieunhap;
        private int count = 0;
        PhieuNhapDAO temp = new PhieuNhapDAO();
+       PhieuKiemDAO temp2 = new PhieuKiemDAO();
 
        public dsPhieuNhapBUS() {
               this.dsPhieunhap = new ArrayList<PhieuNhapDTO>();
@@ -78,38 +81,40 @@ public class dsPhieuNhapBUS implements DanhSachBUS, Serializable {
        @Override
        public void xuatDS() {
               // System.out.printf("┌%-80s┐\n", Sys.repeatStr("─", 80));
-              // System.out.printf("│%-10s%-40s%-10s│\n", Sys.repeatStr(" ", 25), "DANH SÁCH PHIẾU NHẬP",
-              //               Sys.repeatStr(" ", 15));
+              // System.out.printf("│%-10s%-40s%-10s│\n", Sys.repeatStr(" ", 25), "DANH SÁCH
+              // PHIẾU NHẬP",
+              // Sys.repeatStr(" ", 15));
               // System.out.printf("├%-80s┤\n", Sys.repeatStr("─", 80));
               // // System.out.printf("%-20s",Sys.repeatStr(" ", 20));
               // if (dsPhieunhap.isEmpty() == false) {
-              //        for (PhieuNhap phieunhap : dsPhieunhap) {
-              //               phieunhap.inPhieu();
-              //        }
+              // for (PhieuNhap phieunhap : dsPhieunhap) {
+              // phieunhap.inPhieu();
+              // }
               // }
               // System.out.printf("├%-80s┤\n", Sys.repeatStr("─", 80));
-              // System.out.printf("│%-20s%-20s%-40s│\n", Sys.repeatStr("", 20), Sys.repeatStr("", 20),
-              //               "Tổng hóa đơn nhập: " + sumMoneyDS());
+              // System.out.printf("│%-20s%-20s%-40s│\n", Sys.repeatStr("", 20),
+              // Sys.repeatStr("", 20),
+              // "Tổng hóa đơn nhập: " + sumMoneyDS());
               // System.out.printf("└%-80s┘\n", Sys.repeatStr("─", 80));
 
        }
 
-       
        // xuat có lọc
        // public void xuatcoloc(PhieuNhap[] phieunhap, int index) {
-       //        if (index == 0) {
-       //               Sys.printError("Không tìm thấy kết quả");
-       //               return;
-       //        }
-       //        System.out.printf("┌%-80s┐\n", Sys.repeatStr("─", 80));
-       //        System.out.printf("│%-10s%-40s%-10s│\n", Sys.repeatStr(" ", 25), "DANH SÁCH TÌM KIẾM",
-       //                      Sys.repeatStr(" ", 15));
-       //        System.out.printf("├%-80s┤\n", Sys.repeatStr("─", 80));
-       //        for (int i = 0; i < index; i++) {
-       //               phieunhap[i].inPhieu();
-       //        }
-       //        System.out.printf("├%-80s┤\n", Sys.repeatStr("─", 80));
-       //        System.out.printf("└%-80s┘\n", Sys.repeatStr("─", 80));
+       // if (index == 0) {
+       // Sys.printError("Không tìm thấy kết quả");
+       // return;
+       // }
+       // System.out.printf("┌%-80s┐\n", Sys.repeatStr("─", 80));
+       // System.out.printf("│%-10s%-40s%-10s│\n", Sys.repeatStr(" ", 25), "DANH SÁCH
+       // TÌM KIẾM",
+       // Sys.repeatStr(" ", 15));
+       // System.out.printf("├%-80s┤\n", Sys.repeatStr("─", 80));
+       // for (int i = 0; i < index; i++) {
+       // phieunhap[i].inPhieu();
+       // }
+       // System.out.printf("├%-80s┤\n", Sys.repeatStr("─", 80));
+       // System.out.printf("└%-80s┘\n", Sys.repeatStr("─", 80));
        // }
 
        public int sumMoneyDS() {
@@ -120,12 +125,11 @@ public class dsPhieuNhapBUS implements DanhSachBUS, Serializable {
               return sum;
        }
 
-      
-
        @Override
        public void xuatTieuDe() {
-              
+
        }
+
        public boolean add_2(PhieuNhapDTO phieuNhap) {
               int flag = 0;
               for (PhieuNhapDTO iterable_element : this.dsPhieunhap) {
@@ -140,30 +144,66 @@ public class dsPhieuNhapBUS implements DanhSachBUS, Serializable {
                      return false;
               }
        }
-       public boolean Capnhatvaokho_2(String maPhieu, ListProductsBUS kho) {
-              for (PhieuNhapDTO phieuNhap : this.dsPhieunhap) {
-                     if (phieuNhap.getIDPhieu().equals(maPhieu)) {
-                            if (phieuNhap.getTinh_trang().equals("Chưa nhập")) {
-                                   phieuNhap.setTinh_trang("đã nhập");
-                                   ChiTietPhieuDTO[] temp = phieuNhap.getDsChitietphieu2().getChiTietPhieu2s();
-                                   int index = phieuNhap.getDsChitietphieu2().getIndex();
-                                   String maNCC = phieuNhap.getMaNXS();
-                                   String day = phieuNhap.getDate();
-                                   kho.nhapvaokho(temp, index, maNCC, day);
-                                   updatePhieuNhap_database(phieuNhap);
-                                   return true;
-                            }
-                            else {
-                                   return false;
-                            }
+       // public boolean Capnhatvaokho_2(String maPhieu, ListProductsBUS kho) {
+       // for (PhieuNhapDTO phieuNhap : this.dsPhieunhap) {
+       // if (phieuNhap.getIDPhieu().equals(maPhieu)) {
+       // if (phieuNhap.getTinh_trang().equals("Chưa nhập")) {
+       // phieuNhap.setTinh_trang("đã nhập");
+       // ChiTietPhieuDTO[] temp = phieuNhap.getDsChitietphieu2().getChiTietPhieu2s();
+       // int index = phieuNhap.getDsChitietphieu2().getIndex();
+       // String maNCC = phieuNhap.getMaNXS();
+       // String day = phieuNhap.getDate();
+       // kho.nhapvaokho(temp, index, maNCC, day);
+       // updatePhieuNhap_database(phieuNhap);
+       // return true;
+       // }
+       // else {
+       // return false;
+       // }
 
+       // }
+       // }
+       // return false;
+       // }
+       public boolean send_NXS(String maPhieu) {
+              try {
+                     PhieuNhapDTO phieuNhapDTO = null;
+                     for (PhieuNhapDTO iterable_element : dsPhieunhap) {
+                            if(iterable_element.getIDPhieu().equals(maPhieu)){
+                                   phieuNhapDTO = iterable_element;
+                            }
                      }
+                     if(phieuNhapDTO == null){
+                            return false;
+                     }
+                     if (phieuNhapDTO.getTinh_trang().equals("Chưa gửi")) {
+                            phieuNhapDTO.setTinh_trang("Đã gửi");
+                            updatePhieuNhap_database(phieuNhapDTO);
+                            String IDPhieu = phieuNhapDTO.getIDPhieu();
+                            String date = phieuNhapDTO.getDate();
+                            dsChiTietPhieuBUS dsChiTietPhieuBUS = phieuNhapDTO.getDsChitietphieu2();
+                            int sumMoney = dsChiTietPhieuBUS.Sum_money();
+                            String ID_NV = phieuNhapDTO.getIDNhanVien();
+                            String ID_PhieuKiem = IDPhieu.replace('N', 'K');
+                            String MaNSX = phieuNhapDTO.getMaNXS();
+                            PhieuKiemDTO phieuKiemDTO = new PhieuKiemDTO(ID_PhieuKiem, date, dsChiTietPhieuBUS,
+                                          sumMoney,
+                                          ID_NV, IDPhieu, MaNSX);
+                            temp2.save(phieuKiemDTO);
+                            return true;
+                     }
+                     return false;
+
+              } catch (SQLException e) {
+                     // TODO Auto-generated catch block
+                     e.printStackTrace();
+                     return false;
               }
-              return false;
        }
-       public boolean Xoa_2(String idPhieu){
+
+       public boolean Xoa_2(String idPhieu) {
               for (PhieuNhapDTO phieunhap : dsPhieunhap) {
-                     if (phieunhap.getIDPhieu().equals(idPhieu)) {
+                     if (phieunhap.getIDPhieu().equals(idPhieu) && phieunhap.getTinh_trang().equals("Chưa gửi")) {
                             dsPhieunhap.remove(phieunhap);
                             xoaPhieuNhap_database(idPhieu);
                             return true;
@@ -171,7 +211,8 @@ public class dsPhieuNhapBUS implements DanhSachBUS, Serializable {
               }
               return false;
        }
-       public ArrayList<PhieuNhapDTO> TimkiemtheoKey_2(String tuKhoa){
+
+       public ArrayList<PhieuNhapDTO> TimkiemtheoKey_2(String tuKhoa) {
               int tongTien = 0;
               ArrayList<PhieuNhapDTO> phieu = new ArrayList<>();
               // int index = 0;
@@ -196,7 +237,9 @@ public class dsPhieuNhapBUS implements DanhSachBUS, Serializable {
                                           phieunhap.getMaNXS().toLowerCase(Locale.ROOT)
                                                         .contains(tuKhoa.toLowerCase(Locale.ROOT))
                                           ||
-                                          phieunhap.getSumMoney() == tongTien
+                                          phieunhap.getSumMoney() == tongTien ||
+                                          phieunhap.getTinh_trang().toLowerCase(Locale.ROOT)
+                                                        .contains(tuKhoa.toLowerCase(Locale.ROOT))
                                           || temp[j].getNameProduct().toLowerCase(Locale.ROOT)
                                                         .contains(tuKhoa.toLowerCase(Locale.ROOT))
                                           || temp[j].getMaSP().toLowerCase(Locale.ROOT)
@@ -208,12 +251,14 @@ public class dsPhieuNhapBUS implements DanhSachBUS, Serializable {
               }
               return phieu;
        }
-       public boolean Suachitiet_2(PhieuNhapDTO phieuNhap){
-              if(updatePhieuNhap_database(phieuNhap)){
+
+       public boolean Suachitiet_2(PhieuNhapDTO phieuNhap) {
+              if (updatePhieuNhap_database(phieuNhap)) {
                      return true;
               }
               return false;
        }
+
        public PhieuNhapDTO getPhieuNhap_database(String id) {
               PhieuNhapDTO phieuNhap = null;
               try {

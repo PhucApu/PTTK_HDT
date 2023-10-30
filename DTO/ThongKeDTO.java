@@ -37,7 +37,7 @@ public class ThongKeDTO {
               for (int index = 0; index < maSp.size(); index++) {
                      String maSP = maSp.get(index);
                      for (PhieuNhapDTO phieuNhap : list_PhieuNhap) {
-                            if (Sys.kiemTraKhoangThoiGian(dayBefore, phieuNhap.getDate(), dayAfter) && phieuNhap.getTinh_trang().equals("Chưa nhập") == false) {
+                            if (Sys.kiemTraKhoangThoiGian(dayBefore, phieuNhap.getDate(), dayAfter) && phieuNhap.getTinh_trang().equals("Chưa gửi") == false) {
                                    ChiTietPhieuDTO[] chiTietPhieus = phieuNhap.getDsChitietphieu2().getChiTietPhieu2s();
                                    int sl_CT = phieuNhap.getDsChitietphieu2().getIndex();
                                    for (int i = 0; i < sl_CT; i++) {
@@ -72,7 +72,7 @@ public class ThongKeDTO {
               ArrayList<String> maphieuNhap = new ArrayList<>();
               ArrayList<PhieuNhapDTO> list_PhieuNhap = this.dsPhieuNhap.getDsPhieuNhap();
               for (PhieuNhapDTO phieuNhap : list_PhieuNhap) {
-                     if (Sys.kiemTraKhoangThoiGian(dayBefore, phieuNhap.getDate(), dayAfter) && phieuNhap.getTinh_trang().equals("Chưa nhập") == false){
+                     if (Sys.kiemTraKhoangThoiGian(dayBefore, phieuNhap.getDate(), dayAfter) && phieuNhap.getTinh_trang().equals("Chưa gửi") == false){
                             if(tongtienMax <= phieuNhap.getSumMoney() ){
                                    tongtienMax = phieuNhap.getSumMoney();
                                    
@@ -81,7 +81,7 @@ public class ThongKeDTO {
                      
               }
               for (PhieuNhapDTO phieuNhap : list_PhieuNhap) {
-                     if (Sys.kiemTraKhoangThoiGian(dayBefore, phieuNhap.getDate(), dayAfter) && phieuNhap.getTinh_trang().equals("Chưa nhập") == false){
+                     if (Sys.kiemTraKhoangThoiGian(dayBefore, phieuNhap.getDate(), dayAfter) && phieuNhap.getTinh_trang().equals("Chưa gửi") == false){
                             if(tongtienMax == phieuNhap.getSumMoney() ){
                                    // maPhieu = maPhieu + phieuNhap.getIDPhieu()+" ";
                                    maphieuNhap.add(phieuNhap.getIDPhieu());
@@ -101,7 +101,7 @@ public class ThongKeDTO {
               for (int i = 0; i < list_NhanVien.size(); i++) {
                      String maNv = list_NhanVien.get(i).getId();
                      for (PhieuNhapDTO phieuNhap : list_PhieuNhap) {
-                            if (Sys.kiemTraKhoangThoiGian(dayBefore, phieuNhap.getDate(), dayAfter) && phieuNhap.getTinh_trang().equals("Chưa nhập") == false){
+                            if (Sys.kiemTraKhoangThoiGian(dayBefore, phieuNhap.getDate(), dayAfter) && phieuNhap.getTinh_trang().equals("Chưa gửi") == false){
                                    if(phieuNhap.getIDNhanVien().equals(maNv)){
                                           soLanThucHien[i]++;
                                    }
@@ -130,7 +130,7 @@ public class ThongKeDTO {
               for (int index = 0; index < list_NCC.size(); index++) {
                      String maNCC = list_NCC.get(index).getMa();
                      for (PhieuNhapDTO phieuNhap : list_PhieuNhap) {
-                            if (Sys.kiemTraKhoangThoiGian(dayBefore, phieuNhap.getDate(), dayAfter) && phieuNhap.getTinh_trang().equals("Chưa nhập") == false){
+                            if (Sys.kiemTraKhoangThoiGian(dayBefore, phieuNhap.getDate(), dayAfter) && phieuNhap.getTinh_trang().equals("Chưa gửi") == false){
                                    if(phieuNhap.getMaNXS().equals(maNCC)){
                                           soLanThucHien[index]++;
                                    }
